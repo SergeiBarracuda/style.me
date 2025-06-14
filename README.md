@@ -24,32 +24,6 @@ beauty-marketplace/
 └── docs/              # Dokumentace
 ```
 
-## 🚀 Rychlé spuštění
-
-### Lokální vývoj
-
-1. **Backend**
-   ```bash
-   cd backend
-   npm install
-   cp .env.example .env
-   # Upravte .env s vašimi údaji
-   npm run dev
-   ```
-
-2. **Frontend**
-   ```bash
-   cd frontend
-   npm install
-   cp .env.example .env.local
-   # Upravte .env.local s vašimi údaji
-   npm run dev
-   ```
-
-### Produkční nasazení
-
-Viz podrobný návod v `docs/deployment-guide.md`
-
 ## 🔧 Technologie
 
 - **Frontend**: Next.js, React, TypeScript, Tailwind CSS
@@ -60,15 +34,8 @@ Viz podrobný návod v `docs/deployment-guide.md`
 
 ## 📚 Dokumentace
 
-- [Deployment Guide](docs/deployment-guide.md) - Podrobný návod pro nasazení
 - [API Documentation](docs/api-documentation.md) - API endpoints
 - [User Guide](docs/user-guide.md) - Návod pro uživatele
-
-## 🔑 Požadované API klíče
-
-1. **MongoDB Atlas** - Databáze
-2. **Google Maps API** - Mapy a geolokace
-3. **Stripe** - Platby (volitelné)
 
 ## 📞 Podpora
 
