@@ -57,11 +57,10 @@ const apiClient = {
     Object.keys(params).forEach(key => {
       if (params[key] !== undefined && params[key] !== null) {
         url.searchParams.append(key, params[key].toString());
-      }
-    });
+      }    });
 
     // Prepare headers
-    const headers = { ...DEFAULT_HEADERS };
+    const headers: Record<string, string> = { ...DEFAULT_HEADERS };
     
     // Add auth token if required
     if (requireAuth) {
@@ -86,10 +85,9 @@ const apiClient = {
    * @param endpoint - API endpoint to call
    * @param data - Request body data
    * @param requireAuth - Whether the request requires authentication
-   */
-  async post(endpoint: string, data: any = {}, requireAuth = false) {
+   */  async post(endpoint: string, data: any = {}, requireAuth = false) {
     // Prepare headers
-    const headers = { ...DEFAULT_HEADERS };
+    const headers: Record<string, string> = { ...DEFAULT_HEADERS };
     
     // Add auth token if required
     if (requireAuth) {
@@ -115,10 +113,9 @@ const apiClient = {
    * @param endpoint - API endpoint to call
    * @param data - Request body data
    * @param requireAuth - Whether the request requires authentication
-   */
-  async put(endpoint: string, data: any = {}, requireAuth = false) {
+   */  async put(endpoint: string, data: any = {}, requireAuth = false) {
     // Prepare headers
-    const headers = { ...DEFAULT_HEADERS };
+    const headers: Record<string, string> = { ...DEFAULT_HEADERS };
     
     // Add auth token if required
     if (requireAuth) {
@@ -144,9 +141,8 @@ const apiClient = {
    * @param endpoint - API endpoint to call
    * @param requireAuth - Whether the request requires authentication
    */
-  async delete(endpoint: string, requireAuth = false) {
-    // Prepare headers
-    const headers = { ...DEFAULT_HEADERS };
+  async delete(endpoint: string, requireAuth = false) {    // Prepare headers
+    const headers: Record<string, string> = { ...DEFAULT_HEADERS };
     
     // Add auth token if required
     if (requireAuth) {

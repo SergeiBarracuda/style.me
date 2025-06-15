@@ -85,7 +85,6 @@ export default function BookingForm({
       setStep(step - 1);
     }
   };
-
   return (
     <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden">
       <div className="p-6">
@@ -352,12 +351,44 @@ export default function BookingForm({
                     </label>
                   </div>
                 </div>
-              </div>
-              
+              </div>              
               <div className="mt-6 text-sm text-gray-500 dark:text-gray-400">
                 <p>By completing this booking, you agree to our <Link href="/terms" className="text-blue-600 hover:underline dark:text-blue-400">Terms of Service</Link> and <Link href="/cancellation-policy" className="text-blue-600 hover:underline dark:text-blue-400">Cancellation Policy</Link>.</p>
               </div>
             </div>
-          )}
-
-(Content truncated due to size limit. Use line ranges to read in chunks)
+          )}          {/* Navigation Buttons */}
+          <div className="flex justify-between pt-6 border-t border-gray-200 dark:border-gray-700">
+            {step > 1 && (
+              <button
+                type="button"
+                onClick={handleBack}
+                className="px-6 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm text-sm font-medium text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+              >
+                Previous
+              </button>
+            )}
+            
+            {step < 3 ? (
+              <button
+                type="button"
+                onClick={() => setStep(step + 1)}
+                className="ml-auto px-6 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+              >
+                Next
+              </button>
+            ) : (
+              <button
+                type="submit"
+                form="bookingForm"
+                disabled={loading}
+                className="ml-auto px-6 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {loading ? 'Processing...' : 'Complete Booking'}
+              </button>
+            )}
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+};
