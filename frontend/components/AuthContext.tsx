@@ -7,7 +7,7 @@ import authService from './auth.service';
 const AuthContext = createContext(null);
 
 // Auth provider component
-export const AuthProvider = ({ children }) => {
+export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
