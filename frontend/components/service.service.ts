@@ -1,0 +1,76 @@
+import api from './api';
+
+// Service service for handling service operations
+class ServiceService {
+  // Create service
+  async createService(serviceData) {
+    try {
+      const response = await api.post('/services', serviceData);
+      return response.data;
+    } catch (error) {
+      throw error.response ? error.response.data : new Error('Failed to create service');
+    }
+  }
+
+  // Update service
+  async updateService(serviceId, serviceData) {
+    try {
+      const response = await api.put(`/services/${serviceId}`, serviceData);
+      return response.data;
+    } catch (error) {
+      throw error.response ? error.response.data : new Error('Failed to update service');
+    }
+  }
+
+  // Delete service
+  async deleteService(serviceId) {
+    try {
+      const response = await api.delete(`/services/${serviceId}`);
+      return response.data;
+    } catch (error) {
+      throw error.response ? error.response.data : new Error('Failed to delete service');
+    }
+  }
+
+  // Get service by ID
+  async getServiceById(serviceId) {
+    try {
+      const response = await api.get(`/services/${serviceId}`);
+      return response.data;
+    } catch (error) {
+      throw error.response ? error.response.data : new Error('Failed to get service');
+    }
+  }
+
+  // Get services by provider
+  async getServicesByProvider(providerId) {
+    try {
+      const response = await api.get(`/services/provider/${providerId}`);
+      return response.data;
+    } catch (error) {
+      throw error.response ? error.response.data : new Error('Failed to get services');
+    }
+  }
+
+  // Get services by category
+  async getServicesByCategory(category) {
+    try {
+      const response = await api.get(`/services/category/${category}`);
+      return response.data;
+    } catch (error) {
+      throw error.response ? error.response.data : new Error('Failed to get services');
+    }
+  }
+
+  // Get current provider's services
+  async getCurrentProviderServices() {
+    try {
+      const response = await api.get('/services/me');
+      return response.data;
+    } catch (error) {
+      throw error.response ? error.response.data : new Error('Failed to get services');
+    }
+  }
+}
+
+export default new ServiceService();
