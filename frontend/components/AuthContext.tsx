@@ -32,8 +32,12 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           }
         }
       } catch (err) {
-        setError(err.message);
-        console.error('Auth initialization error:', err);
+        setError(err instanceof Error ? err.message : 'An error occurred');
+        } catch (err) {
+  const errorMessage = err instanceof Error ? err.message : 'An error occurred';
+  setError(errorMessage);
+  console.error('Auth initialization error:', err);
+}
       } finally {
         setLoading(false);
       }
