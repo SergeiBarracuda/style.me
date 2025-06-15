@@ -52,7 +52,7 @@ const apiClient = {
   async get(endpoint: string, params: Record<string, any> = {}, requireAuth = false) {
     // Build URL with query parameters
     const url = new URL(`${API_BASE_URL}${endpoint}`);
-    
+
     // Add query parameters
     Object.keys(params).forEach(key => {
       if (params[key] !== undefined && params[key] !== null) {
@@ -61,7 +61,7 @@ const apiClient = {
 
     // Prepare headers
     const headers: Record<string, string> = { ...DEFAULT_HEADERS };
-    
+
     // Add auth token if required
     if (requireAuth) {
       const token = getAuthToken();
@@ -88,7 +88,7 @@ const apiClient = {
    */  async post(endpoint: string, data: any = {}, requireAuth = false) {
     // Prepare headers
     const headers: Record<string, string> = { ...DEFAULT_HEADERS };
-    
+
     // Add auth token if required
     if (requireAuth) {
       const token = getAuthToken();
@@ -116,7 +116,7 @@ const apiClient = {
    */  async put(endpoint: string, data: any = {}, requireAuth = false) {
     // Prepare headers
     const headers: Record<string, string> = { ...DEFAULT_HEADERS };
-    
+
     // Add auth token if required
     if (requireAuth) {
       const token = getAuthToken();
@@ -143,7 +143,7 @@ const apiClient = {
    */
   async delete(endpoint: string, requireAuth = false) {    // Prepare headers
     const headers: Record<string, string> = { ...DEFAULT_HEADERS };
-    
+
     // Add auth token if required
     if (requireAuth) {
       const token = getAuthToken();

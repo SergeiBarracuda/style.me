@@ -43,15 +43,15 @@ export async function getCurrentUser(): Promise<User | null> {
   try {
     const cookieStore = cookies();
     const token = cookieStore.get(TOKEN_COOKIE_NAME)?.value;
-    
+
     if (!token) {
       return null;
     }
-    
+
     // In a real implementation, this would verify the token with the database
     // For now, we'll use a mock implementation
     // This would be replaced with actual database queries
-    
+
     // Mock implementation for demonstration
     const mockUser: User = {
       id: 1,
@@ -59,7 +59,7 @@ export async function getCurrentUser(): Promise<User | null> {
       userType: 'client',
       isVerified: true
     };
-    
+
     return mockUser;
   } catch (error) {
     console.error('Error getting current user:', error);

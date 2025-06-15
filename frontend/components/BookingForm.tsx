@@ -55,22 +55,22 @@ export default function BookingForm({
   // Handle form submission
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (step < 3) {
       // Move to next step
       setStep(step + 1);
       return;
     }
-    
+
     setLoading(true);
-    
+
     try {
       // In a real implementation, this would make an API call to create the booking
       // For now, we'll simulate a successful booking
-      
+
       // Simulate API call delay
       await new Promise(resolve => setTimeout(resolve, 1500));
-      
+
       // Redirect to confirmation page
       router.push(`/booking/confirmation?id=${Date.now()}`);
     } catch (error) {
@@ -104,7 +104,7 @@ export default function BookingForm({
             </p>
           </div>
         </div>
-        
+
         {/* Progress Steps */}
         <div className="mb-8">
           <div className="flex items-center justify-between">
@@ -140,7 +140,7 @@ export default function BookingForm({
             </div>
           </div>
         </div>
-        
+
         <form onSubmit={handleSubmit}>
           {/* Step 1: Select Service */}
           {step === 1 && (
@@ -148,11 +148,11 @@ export default function BookingForm({
               <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-4">Select a Service</h3>
               <div className="space-y-4">
                 {services.map((service) => (
-                  <div 
+                  <div
                     key={service.id}
                     className={`border rounded-lg p-4 cursor-pointer transition-colors ${
-                      selectedService === service.id 
-                        ? 'border-blue-500 bg-blue-50 dark:bg-blue-900 dark:border-blue-400' 
+                      selectedService === service.id
+                        ? 'border-blue-500 bg-blue-50 dark:bg-blue-900 dark:border-blue-400'
                         : 'border-gray-200 hover:border-blue-300 dark:border-gray-700 dark:hover:border-blue-500'
                     }`}
                     onClick={() => setSelectedService(service.id)}
@@ -176,12 +176,12 @@ export default function BookingForm({
               </div>
             </div>
           )}
-          
+
           {/* Step 2: Select Date and Time */}
           {step === 2 && (
             <div>
               <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-4">Select Date and Time</h3>
-              
+
               <div className="mb-6">
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   Available Dates
@@ -206,7 +206,7 @@ export default function BookingForm({
                   ))}
                 </div>
               </div>
-              
+
               {selectedDate && (
                 <div>
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
@@ -230,7 +230,7 @@ export default function BookingForm({
                   </div>
                 </div>
               )}
-              
+
               <div className="mt-6">
                 <label htmlFor="notes" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   Additional Notes (Optional)
@@ -246,12 +246,12 @@ export default function BookingForm({
               </div>
             </div>
           )}
-          
+
           {/* Step 3: Payment */}
           {step === 3 && (
             <div>
               <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-4">Payment Details</h3>
-              
+
               <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 mb-6">
                 <h4 className="font-medium text-gray-900 dark:text-white mb-2">Booking Summary</h4>
                 <div className="space-y-2 text-sm">
@@ -287,7 +287,7 @@ export default function BookingForm({
                   </div>
                 </div>
               </div>
-              
+
               <div className="space-y-4">
                 <div>
                   <label htmlFor="cardName" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
@@ -300,7 +300,7 @@ export default function BookingForm({
                     className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
                   />
                 </div>
-                
+
                 <div>
                   <label htmlFor="cardNumber" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                     Card Number
@@ -312,7 +312,7 @@ export default function BookingForm({
                     className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
                   />
                 </div>
-                
+
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <label htmlFor="expiry" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
@@ -337,7 +337,7 @@ export default function BookingForm({
                     />
                   </div>
                 </div>
-                
+
                 <div className="mt-2">
                   <div className="flex items-center">
                     <input
@@ -351,7 +351,7 @@ export default function BookingForm({
                     </label>
                   </div>
                 </div>
-              </div>              
+              </div>
               <div className="mt-6 text-sm text-gray-500 dark:text-gray-400">
                 <p>By completing this booking, you agree to our <Link href="/terms" className="text-blue-600 hover:underline dark:text-blue-400">Terms of Service</Link> and <Link href="/cancellation-policy" className="text-blue-600 hover:underline dark:text-blue-400">Cancellation Policy</Link>.</p>
               </div>
@@ -367,7 +367,7 @@ export default function BookingForm({
                 Previous
               </button>
             )}
-            
+
             {step < 3 ? (
               <button
                 type="button"

@@ -18,7 +18,7 @@ export interface Booking {
   updatedAt: string;
 }
 
-export type BookingStatus = 
+export type BookingStatus =
   | 'pending'
   | 'confirmed'
   | 'in-progress'
