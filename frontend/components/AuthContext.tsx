@@ -2,15 +2,16 @@
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import authService from './auth.service';
+import { User, AuthContextType, RegisterData, SocialAuthData } from '../types/auth.types';
 
 // Create auth context
-const AuthContext = createContext(null);
+const AuthContext = createContext<AuthContextType | null>(null);
 
 // Auth provider component
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<string | null>(null);
 
   // Initialize auth state
   useEffect(() => {
@@ -32,12 +33,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           }
         }
       } catch (err) {
-        setError(err instanceof Error ? err.message : 'An error occurred');
-        } catch (err) {
-  const errorMessage = err instanceof Error ? err.message : 'An error occurred';
-  setError(errorMessage);
-  console.error('Auth initialization error:', err);
-}
+        const errorMessage = err instanceof Error ? err.message : 'An error occurred';
+        setError(errorMessage);
+        console.error('Auth initialization error:', err);
       } finally {
         setLoading(false);
       }
@@ -45,9 +43,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
     initAuth();
   }, []);
-
   // Register function
-  const register = async (userData) => {
+  const register = async (userData: RegisterData) => {
     setLoading(true);
     setError(null);
     try {
@@ -55,7 +52,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       setUser(result.user);
       return result;
     } catch (err) {
-      setError(err.message || 'Registration failed');
+      const errorMessage = err instanceof Error ? err.message : 'Registration failed';
+      setError(errorMessage);
       throw err;
     } finally {
       setLoading(false);
@@ -63,7 +61,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   // Login function
-  const login = async (email, password) => {
+  const login = async (email: string, password: string) => {
     setLoading(true);
     setError(null);
     try {
@@ -71,7 +69,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       setUser(result.user);
       return result;
     } catch (err) {
-      setError(err.message || 'Login failed');
+      const errorMessage = err instanceof Error ? err.message : 'Login failed';
+      setError(errorMessage);
       throw err;
     } finally {
       setLoading(false);
@@ -79,7 +78,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   // Social login function
-  const socialLogin = async (userData) => {
+  const socialLogin = async (userData: SocialAuthData) => {
     setLoading(true);
     setError(null);
     try {
@@ -87,7 +86,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       setUser(result.user);
       return result;
     } catch (err) {
-      setError(err.message || 'Social login failed');
+      const errorMessage = err instanceof Error ? err.message : 'Social login failed';
+      setError(errorMessage);
       throw err;
     } finally {
       setLoading(false);
@@ -101,13 +101,13 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   // Update user function
-  const updateUser = (userData) => {
+  const updateUser = (userData: User) => {
     setUser(userData);
     authService.setUser(userData);
   };
 
   // Context value
-  const value = {
+  const value: AuthContextType = {
     user,
     loading,
     error,
