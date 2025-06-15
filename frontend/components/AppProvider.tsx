@@ -6,7 +6,7 @@ import { SearchProvider } from './SearchContext';
 import { BookingProvider } from './BookingContext';
 
 // Global app provider that combines all context providers
-export const AppProvider = ({ children }) => {
+export const AppProvider = ({ children }: { children: React.ReactNode }) => {
   return (
     <AuthProvider>
       <SearchProvider>
