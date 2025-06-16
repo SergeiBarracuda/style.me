@@ -21,7 +21,7 @@ export default function MapView({ filters }: MapViewProps) {
     const fetchProviders = async () => {
       setLoading(true);
       setError(null);
-      
+
       try {
         const response = await providerService.searchProviders(filters);
         setProviders(response.providers);
@@ -55,7 +55,7 @@ export default function MapView({ filters }: MapViewProps) {
           </svg>
         </div>
         <p className="text-center text-gray-700 dark:text-gray-300">{error}</p>
-        <button 
+        <button
           onClick={() => window.location.reload()}
           className="mt-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
         >
@@ -93,8 +93,8 @@ export default function MapView({ filters }: MapViewProps) {
 
   return (
     <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden">
-      <ProviderMap 
-        providers={mappedProviders} 
+      <ProviderMap
+        providers={mappedProviders}
         isDarkMode={isDarkMode}
       />
     </div>

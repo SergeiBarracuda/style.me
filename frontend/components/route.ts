@@ -12,7 +12,7 @@ export async function GET(request: NextRequest) {
   const origin = searchParams.get('origin');
   const destination = searchParams.get('destination');
   const mode = searchParams.get('mode') || 'driving';
-  
+
   // Validate required parameters
   if (!origin || !destination) {
     return NextResponse.json(
@@ -20,7 +20,7 @@ export async function GET(request: NextRequest) {
       { status: 400 }
     );
   }
-  
+
   try {
     // Call Google Directions API
     const url = new URL('https://maps.googleapis.com/maps/api/directions/json');
@@ -28,20 +28,20 @@ export async function GET(request: NextRequest) {
     url.searchParams.append('destination', destination);
     url.searchParams.append('mode', mode);
     url.searchParams.append('key', GOOGLE_MAPS_API_KEY);
-    
+
     const response = await fetch(url.toString());
-    
+
     if (!response.ok) {
       throw new Error(`Google Directions API error: ${response.status}`);
     }
-    
+
     const data = await response.json();
-    
+
     // Process and simplify the response
     if (data.status === 'OK' && data.routes && data.routes.length > 0) {
       const route = data.routes[0];
       const leg = route.legs[0];
-      
+
       // Format the response
       const formattedResponse = {
         distance: leg.distance.text,
@@ -53,7 +53,7 @@ export async function GET(request: NextRequest) {
         }),
         polyline: route.overview_polyline.points,
       };
-      
+
       return NextResponse.json(formattedResponse);
     } else {
       return NextResponse.json(

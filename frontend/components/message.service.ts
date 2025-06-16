@@ -1,19 +1,19 @@
 import api from './api';
-import { 
-  Message, 
-  Conversation, 
-  MessageResponse, 
-  ConversationResponse, 
-  ConversationsListResponse 
+import {
+  Message,
+  Conversation,
+  MessageResponse,
+  ConversationResponse,
+  ConversationsListResponse
 } from '../types/message.types';
 
 // Message service for handling message operations
 class MessageService {
   // Send message
   async sendMessage(
-    receiverId: number, 
-    content: string, 
-    mediaUrl: string | null = null, 
+    receiverId: number,
+    content: string,
+    mediaUrl: string | null = null,
     relatedBookingId: number | null = null
   ): Promise<MessageResponse> {
     try {

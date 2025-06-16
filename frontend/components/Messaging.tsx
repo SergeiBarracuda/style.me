@@ -24,10 +24,10 @@ export default function Messaging({ userId, userRole }: MessagingProps) {
       try {
         // In a real implementation, this would make an API call to fetch conversations
         // For now, we'll use mock data
-        
+
         // Simulate API call delay
         await new Promise(resolve => setTimeout(resolve, 1000));
-        
+
         // Mock conversations data
         const mockConversations: Conversation[] = [
           {
@@ -98,21 +98,21 @@ export default function Messaging({ userId, userRole }: MessagingProps) {
             unreadCount: 2,
           },
         ];
-        
+
         setConversations(mockConversations);
-        
+
         // Select first conversation by default if none is selected
         if (!selectedConversation && mockConversations.length > 0) {
           setSelectedConversation(mockConversations[0].id);
         }
-        
+
         setLoading(false);
       } catch (error) {
         console.error('Error fetching conversations:', error);
         setLoading(false);
       }
     };
-    
+
     fetchConversations();
   }, [userId, userRole, selectedConversation]);
 
@@ -120,14 +120,14 @@ export default function Messaging({ userId, userRole }: MessagingProps) {
   useEffect(() => {
     const fetchMessages = async () => {
       if (!selectedConversation) return;
-      
+
       try {
         // In a real implementation, this would make an API call to fetch messages
         // For now, we'll use mock data
-        
+
         // Simulate API call delay
         await new Promise(resolve => setTimeout(resolve, 500));
-        
+
         // Mock messages data
         const mockMessages: Message[] = [
           {
@@ -192,12 +192,12 @@ export default function Messaging({ userId, userRole }: MessagingProps) {
             isRead: false,
           },
         ];
-        
+
         setMessages(mockMessages);
-        
+
         // Mark conversation as read
-        setConversations(prevConversations => 
-          prevConversations.map(conv => 
+        setConversations(prevConversations =>
+          prevConversations.map(conv =>
             conv.id === selectedConversation
               ? { ...conv, unreadCount: 0 }
               : conv
@@ -207,7 +207,7 @@ export default function Messaging({ userId, userRole }: MessagingProps) {
         console.error('Error fetching messages:', error);
       }
     };
-    
+
     fetchMessages();
   }, [selectedConversation]);
 
@@ -226,7 +226,7 @@ export default function Messaging({ userId, userRole }: MessagingProps) {
     const date = new Date(timestamp);
     const now = new Date();
     const diffDays = Math.floor((now.getTime() - date.getTime()) / (1000 * 60 * 60 * 24));
-    
+
     if (diffDays === 0) {
       // Today, show time
       return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
@@ -245,25 +245,25 @@ export default function Messaging({ userId, userRole }: MessagingProps) {
   // Handle sending a new message
   const handleSendMessage = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!newMessage.trim() || !selectedConversation) return;
-    
+
     setSendingMessage(true);
-    
+
     try {
       // In a real implementation, this would make an API call to send the message
       // For now, we'll simulate it
-      
+
       // Simulate API call delay
       await new Promise(resolve => setTimeout(resolve, 500));
-      
+
       // Get the selected conversation
       const conversation = conversations.find(c => c.id === selectedConversation);
       if (!conversation) return;
-      
+
       // Get the other participant
       const otherParticipant = getOtherParticipant(conversation);
-      
+
       // Create new message
       const newMsg: Message = {
         id: `msg-${Date.now()}`,        senderId: userId,
@@ -272,13 +272,13 @@ export default function Messaging({ userId, userRole }: MessagingProps) {
         timestamp: new Date().toISOString(),
         isRead: false,
       };
-      
+
       // Add message to list
       setMessages(prevMessages => [...prevMessages, newMsg]);
-      
+
       // Update conversation last message
-      setConversations(prevConversations => 
-        prevConversations.map(conv => 
+      setConversations(prevConversations =>
+        prevConversations.map(conv =>
           conv.id === selectedConversation
             ? {
                 ...conv,                lastMessage: {
@@ -290,7 +290,7 @@ export default function Messaging({ userId, userRole }: MessagingProps) {
             : conv
         )
       );
-      
+
       // Clear input
       setNewMessage('');
     } catch (error) {
@@ -308,7 +308,7 @@ export default function Messaging({ userId, userRole }: MessagingProps) {
           <div className="p-4 border-b border-gray-200 dark:border-gray-700">
             <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Messages</h2>
           </div>
-          
+
           {loading ? (
             <div className="p-4 space-y-4">
               {[...Array(3)].map((_, i) => (
@@ -330,7 +330,7 @@ export default function Messaging({ userId, userRole }: MessagingProps) {
               {conversations.map((conversation) => {
                 const otherParticipant = getOtherParticipant(conversation);
                 const isSelected = selectedConversation === conversation.id;
-                
+
                 return (
                   <div
                     key={conversation.id}
@@ -354,7 +354,7 @@ export default function Messaging({ userId, userRole }: MessagingProps) {
                         </div>
                       )}
                     </div>
-                    
+
                     <div className="ml-3 flex-1 min-w-0">
                       <div className="flex justify-between items-baseline">
                         <h3 className="text-sm font-medium text-gray-900 dark:text-white truncate">
@@ -379,7 +379,7 @@ export default function Messaging({ userId, userRole }: MessagingProps) {
             </div>
           )}
         </div>
-        
+
         {/* Messages */}
         <div className="w-2/3 flex flex-col">
           {selectedConversation ? (
@@ -388,9 +388,9 @@ export default function Messaging({ userId, userRole }: MessagingProps) {
               {(() => {
                 const conversation = conversations.find(c => c.id === selectedConversation);
                 if (!conversation) return null;
-                
+
                 const otherParticipant = getOtherParticipant(conversation);
-                
+
                 return (
                   <div className="p-4 border-b border-gray-200 dark:border-gray-700 flex items-center">
                     <div className="relative h-10 w-10 rounded-full overflow-hidden">
@@ -412,12 +412,12 @@ export default function Messaging({ userId, userRole }: MessagingProps) {
                   </div>
                 );
               })()}
-              
+
               {/* Messages List */}              <div className="flex-1 p-4 overflow-y-auto">
                 <div className="space-y-4">
                   {messages.map((message) => {
                     const isOwnMessage = message.senderId === userId;
-                    
+
                     return (
                       <div
                         key={message.id}
@@ -440,7 +440,7 @@ export default function Messaging({ userId, userRole }: MessagingProps) {
                   })}
                 </div>
               </div>
-              
+
               {/* Message Input */}
               <div className="p-4 border-t border-gray-200 dark:border-gray-700">
                 <div className="flex space-x-2">

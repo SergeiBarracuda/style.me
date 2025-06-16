@@ -30,9 +30,9 @@ interface SearchContextType {
   popularServices: any[];
   searchFilters: SearchFilters;
   searchProvidersByLocation: (
-    lat: number, 
-    lng: number, 
-    radius?: number, 
+    lat: number,
+    lng: number,
+    radius?: number,
     category?: string | null,
     additionalFilters?: {
       rating?: number;
@@ -97,9 +97,9 @@ export const SearchProvider = ({ children }) => {
 
   // Search providers by location
   const searchProvidersByLocation = async (
-    lat: number, 
-    lng: number, 
-    radius: number = 10, 
+    lat: number,
+    lng: number,
+    radius: number = 10,
     category: string | null = null,
     additionalFilters: any = {}
   ) => {
@@ -109,23 +109,23 @@ export const SearchProvider = ({ children }) => {
       // In a real implementation, we would pass all filters to the API
       // For now, we'll just use the basic parameters
       const results = await searchService.searchProvidersByLocation(lat, lng, radius, category);
-      
+
       // Apply client-side filtering for the additional filters
       // This is a simplified implementation - in a real app, these would be server-side filters
       let filteredResults = [...results];
-      
+
       if (additionalFilters.rating) {
         filteredResults = filteredResults.filter(
           provider => provider.averageRating >= additionalFilters.rating
         );
       }
-      
+
       if (additionalFilters.availableNow) {
         filteredResults = filteredResults.filter(
           provider => provider.availableTimes && provider.availableTimes.length > 0
         );
       }
-      
+
       // Sort results
       if (additionalFilters.sortBy) {
         switch (additionalFilters.sortBy) {
@@ -151,7 +151,7 @@ export const SearchProvider = ({ children }) => {
             break;
         }
       }
-      
+
       setSearchResults(filteredResults);
       setSearchFilters({
         ...searchFilters,
@@ -225,4 +225,3 @@ export const useSearch = () => {
   }
   return context;
 };
-

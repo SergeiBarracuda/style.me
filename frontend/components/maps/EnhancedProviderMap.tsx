@@ -4,10 +4,10 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 import { GoogleMap, Marker, InfoWindow, Circle, MarkerClusterer } from '@react-google-maps/api';
 import Image from 'next/image';
 import Link from 'next/link';
-import { 
-  DEFAULT_CENTER, 
-  DEFAULT_ZOOM, 
-  LIGHT_MODE_STYLES, 
+import {
+  DEFAULT_CENTER,
+  DEFAULT_ZOOM,
+  LIGHT_MODE_STYLES,
   DARK_MODE_STYLES,
   getUserLocation
 } from '../maps';
@@ -131,7 +131,7 @@ export default function EnhancedProviderMap({
 
   if (mapError) {
     return (
-      <div 
+      <div
         style={{ height, width }}
         className="flex flex-col items-center justify-center bg-gray-100 dark:bg-gray-800 rounded-lg"
       >
@@ -141,7 +141,7 @@ export default function EnhancedProviderMap({
           </svg>
         </div>
         <p className="text-center text-gray-700 dark:text-gray-300">{mapError}</p>
-        <button 
+        <button
           onClick={() => window.location.reload()}
           className="mt-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
         >
@@ -236,11 +236,11 @@ export default function EnhancedProviderMap({
                         className="object-cover"
                       />
                     </div>
-                    
+
                     <div className="ml-3">
                       <h3 className="font-medium text-gray-900">{selectedProvider.name}</h3>
                       <p className="text-sm text-gray-600">{selectedProvider.primaryService}</p>
-                      
+
                       <div className="flex items-center mt-1">
                         {[...Array(5)].map((_, i) => (
                           <svg
@@ -260,7 +260,7 @@ export default function EnhancedProviderMap({
                         ))}
                         <span className="ml-1 text-xs text-gray-600">{selectedProvider.rating.toFixed(1)}</span>
                       </div>
-                      
+
                       {selectedProvider.distance && (
                         <p className="text-xs text-blue-600 mt-1">
                           {selectedProvider.distance}
@@ -268,7 +268,7 @@ export default function EnhancedProviderMap({
                       )}
                     </div>
                   </div>
-                  
+
                   {selectedProvider.availableTimes && selectedProvider.availableTimes.length > 0 && (
                     <div className="mt-2">
                       <p className="text-xs font-medium text-gray-700">Available Today:</p>
@@ -287,7 +287,7 @@ export default function EnhancedProviderMap({
                       </div>
                     </div>
                   )}
-                  
+
                   <div className="mt-3 flex justify-between">
                     <div className="flex space-x-1">
                       <button className="p-1 text-xs bg-gray-100 text-gray-800 rounded hover:bg-gray-200">
@@ -308,7 +308,7 @@ export default function EnhancedProviderMap({
                         </svg>
                       </button>
                     </div>
-                    
+
                     <Link
                       href={`/provider/${selectedProvider.id}`}
                       className="px-2 py-1 text-xs bg-blue-600 text-white rounded hover:bg-blue-700"
@@ -325,4 +325,3 @@ export default function EnhancedProviderMap({
     </div>
   );
 }
-

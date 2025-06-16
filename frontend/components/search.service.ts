@@ -6,7 +6,7 @@ class SearchService {  // Search providers by location
     try {
       const params: any = { lat, lng, radius };
       if (category) params.category = category;
-      
+
       const response = await api.get('/search/providers', { params });
       return response.data;
     } catch (error) {

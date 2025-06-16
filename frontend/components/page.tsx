@@ -10,7 +10,7 @@ import MapView from './map-view';
 export default function SearchPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  
+
   // Parse search parameters
   const initialFilters: ProviderSearchParams = {
     location: searchParams.get('location') || undefined,
@@ -73,15 +73,15 @@ export default function SearchPage() {
   useEffect(() => {
     if (!loading) {
       const params = new URLSearchParams();
-      
+
       Object.entries(filters).forEach(([key, value]) => {
         if (value !== undefined && value !== null && value !== '') {
           params.set(key, String(value));
         }
       });
-      
+
       params.set('view', view);
-      
+
       router.push(`/search?${params.toString()}`);
     }
   }, [filters, view, loading, router]);
@@ -123,7 +123,7 @@ export default function SearchPage() {
   return (
     <div className="container mx-auto px-4 py-8">
       <h1 className="text-2xl font-bold mb-6 text-gray-800 dark:text-white">Find Beauty Services Near You</h1>
-      
+
       {/* Search Filters */}
       <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4 mb-6">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
@@ -144,7 +144,7 @@ export default function SearchPage() {
               ))}
             </select>
           </div>
-          
+
           {/* Rating Filter */}
           <div>
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
@@ -162,7 +162,7 @@ export default function SearchPage() {
               <option value="2">2+ Stars</option>
             </select>
           </div>
-          
+
           {/* Price Filter */}
           <div>
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
@@ -180,7 +180,7 @@ export default function SearchPage() {
               <option value="100-999">$100+</option>
             </select>
           </div>
-          
+
           {/* Available Now Filter */}
           <div className="flex items-end">
             <label className="inline-flex items-center">
@@ -193,7 +193,7 @@ export default function SearchPage() {
               <span className="ml-2 text-sm text-gray-700 dark:text-gray-300">Available Now</span>
             </label>
           </div>
-          
+
           {/* View Toggle */}
           <div className="flex items-end justify-end">
             <button
@@ -219,7 +219,7 @@ export default function SearchPage() {
           </div>
         </div>
       </div>
-      
+
       {/* Results View */}
       <div className="grid grid-cols-1 gap-6">
         {view === 'map' ? (

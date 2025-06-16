@@ -10,27 +10,27 @@ interface ReviewListProps {
   showFilters?: boolean;
 }
 
-export default function ReviewList({ 
-  providerId, 
-  userId, 
+export default function ReviewList({
+  providerId,
+  userId,
   limit = 10,
-  showFilters = true 
+  showFilters = true
 }: ReviewListProps) {
   const [reviews, setReviews] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState<'all' | 1 | 2 | 3 | 4 | 5>('all');
   const [sort, setSort] = useState<'newest' | 'oldest' | 'highest' | 'lowest'>('newest');
-  
+
   useEffect(() => {
     // Fetch reviews
     const fetchReviews = async () => {
       try {
         // In a real implementation, this would make an API call to fetch reviews
         // For now, we'll use mock data
-        
+
         // Simulate API call delay
         await new Promise(resolve => setTimeout(resolve, 1000));
-        
+
         // Mock reviews data
         const mockReviews = [
           {
@@ -97,20 +97,20 @@ export default function ReviewList({
             },
           },
         ];
-        
+
         // Filter reviews if providerId or userId is provided
         let filteredReviews = [...mockReviews];
-        
+
         // Apply rating filter if not 'all'
         if (filter !== 'all') {
           filteredReviews = filteredReviews.filter(review => review.rating === filter);
         }
-        
+
         // Apply sorting
         filteredReviews.sort((a, b) => {
           const dateA = new Date(a.date).getTime();
           const dateB = new Date(b.date).getTime();
-          
+
           switch (sort) {
             case 'newest':
               return dateB - dateA;
@@ -124,12 +124,12 @@ export default function ReviewList({
               return dateB - dateA;
           }
         });
-        
+
         // Apply limit
         if (limit) {
           filteredReviews = filteredReviews.slice(0, limit);
         }
-        
+
         setReviews(filteredReviews);
         setLoading(false);
       } catch (error) {
@@ -137,7 +137,7 @@ export default function ReviewList({
         setLoading(false);
       }
     };
-    
+
     fetchReviews();
   }, [providerId, userId, limit, filter, sort]);
 
@@ -145,15 +145,15 @@ export default function ReviewList({
   const averageRating = reviews.length > 0
     ? reviews.reduce((sum, review) => sum + review.rating, 0) / reviews.length
     : 0;
-  
+
   // Calculate rating distribution
   const ratingDistribution = [0, 0, 0, 0, 0]; // 5 stars, 4 stars, 3 stars, 2 stars, 1 star
   reviews.forEach(review => {
     ratingDistribution[5 - review.rating]++;
   });
-  
+
   // Calculate rating percentages
-  const ratingPercentages = ratingDistribution.map(count => 
+  const ratingPercentages = ratingDistribution.map(count =>
     reviews.length > 0 ? (count / reviews.length) * 100 : 0
   );
 
@@ -187,7 +187,7 @@ export default function ReviewList({
                 </span>
               </div>
             </div>
-            
+
             {/* Rating Distribution */}
             <div className="mt-4 space-y-2">
               {[5, 4, 3, 2, 1].map((star, index) => (
@@ -211,7 +211,7 @@ export default function ReviewList({
             </div>
           </div>
         )}
-        
+
         {/* Filters */}
         {showFilters && (
           <div className="mb-6 flex flex-col sm:flex-row justify-between items-start sm:items-center">
@@ -240,7 +240,7 @@ export default function ReviewList({
                 </button>
               ))}
             </div>
-            
+
             <div>
               <select
                 value={sort}
@@ -255,7 +255,7 @@ export default function ReviewList({
             </div>
           </div>
         )}
-        
+
         {/* Reviews List */}
         {loading ? (
           <div className="space-y-4">

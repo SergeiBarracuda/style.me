@@ -9,14 +9,14 @@ interface SearchFormProps {
 }
 
 export default function SearchForm({ className = '' }: SearchFormProps) {
-  const { 
-    searchProvidersByLocation, 
-    searchServicesByKeyword, 
+  const {
+    searchProvidersByLocation,
+    searchServicesByKeyword,
     categories,
     searchFilters,
-    loading 
+    loading
   } = useSearch();
-  
+
   const [keyword, setKeyword] = useState(searchFilters.keyword || '');
   const [selectedCategory, setSelectedCategory] = useState(searchFilters.category || '');
   const [radius, setRadius] = useState(searchFilters.radius || 10);
@@ -27,7 +27,7 @@ export default function SearchForm({ className = '' }: SearchFormProps) {
   // Handle search submission
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (keyword) {
       // If keyword is provided, search by keyword
       await searchServicesByKeyword(keyword);
@@ -141,7 +141,7 @@ export default function SearchForm({ className = '' }: SearchFormProps) {
                   <span className="ml-2 text-gray-700 dark:text-gray-300">Enter location</span>
                 </label>
               </div>
-              
+
               {!useCurrentLocation && (
                 <input
                   type="text"
@@ -151,7 +151,7 @@ export default function SearchForm({ className = '' }: SearchFormProps) {
                   className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
                 />
               )}
-              
+
               {locationError && (
                 <p className="mt-1 text-sm text-red-600 dark:text-red-400">{locationError}</p>
               )}
@@ -206,4 +206,3 @@ export default function SearchForm({ className = '' }: SearchFormProps) {
     </div>
   );
 }
-
