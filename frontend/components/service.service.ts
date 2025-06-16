@@ -66,9 +66,18 @@ class ServiceService {
   async getCurrentProviderServices() {
     try {
       const response = await api.get('/services/me');
+      return response.data;    } catch (error) {
+      throw error.response ? error.response.data : new Error('Failed to get services');
+    }
+  }
+
+  // Get popular categories
+  async getPopularCategories() {
+    try {
+      const response = await api.get('/services/categories/popular');
       return response.data;
     } catch (error) {
-      throw error.response ? error.response.data : new Error('Failed to get services');
+      throw error.response ? error.response.data : new Error('Failed to get popular categories');
     }
   }
 }

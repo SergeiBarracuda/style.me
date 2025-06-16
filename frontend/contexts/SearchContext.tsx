@@ -1,7 +1,7 @@
 'use client';
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import searchService from '@/services/search.service';
+import searchService from '../components/search.service';
 
 // Define types
 interface Location {
@@ -93,8 +93,7 @@ export const SearchProvider = ({ children }) => {
       }
     };
 
-    loadFeaturedData();
-  }, []);
+    loadFeaturedData();  }, []);
 
   // Search providers by location
   const searchProvidersByLocation = async (
@@ -102,7 +101,7 @@ export const SearchProvider = ({ children }) => {
     lng: number, 
     radius: number = 10, 
     category: string | null = null,
-    additionalFilters = {}
+    additionalFilters: any = {}
   ) => {
     setLoading(true);
     setError(null);

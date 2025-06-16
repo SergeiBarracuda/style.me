@@ -18,9 +18,11 @@
     "@googlemaps/js-api-loader": "^1.15.1",
     "@headlessui/react": "^1.7.14",
     "@heroicons/react": "^2.0.17",
+    "@react-google-maps/api": "^2.20.6",
     "axios": "^1.4.0",
     "js-cookie": "^3.0.5",
     "next": "13.4.1",
+    "next-themes": "^0.4.6",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-hook-form": "^7.43.9",
@@ -38,4 +40,3 @@
     "tailwindcss": "3.3.2"
   }
 }
-

@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect } from 'react';
-import { AppProvider } from './context/AppProvider';
+import { AppProvider } from './AppProvider';
 import { usePathname } from 'next/navigation';
 
 export function Providers({ children }) {

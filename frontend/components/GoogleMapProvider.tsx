@@ -2,7 +2,7 @@
 
 import { ReactNode, useState, useEffect, createContext, useContext } from 'react';
 import { LoadScript } from '@react-google-maps/api';
-import { GOOGLE_MAPS_API_KEY } from '@/lib/maps';
+import { GOOGLE_MAPS_API_KEY } from './maps';
 
 // Libraries to load
 const libraries = ['places', 'geometry', 'drawing'];

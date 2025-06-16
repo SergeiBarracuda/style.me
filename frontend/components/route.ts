@@ -4,7 +4,7 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server';
-import { GOOGLE_MAPS_API_KEY } from '@/lib/maps';
+import { GOOGLE_MAPS_API_KEY } from './maps';
 
 export async function GET(request: NextRequest) {
   // Get query parameters

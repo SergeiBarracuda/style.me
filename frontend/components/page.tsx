@@ -2,9 +2,9 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import providerService, { ProviderSearchParams } from '@/lib/api/providerService';
-import serviceService from '@/lib/api/serviceService';
-import { getUserLocation } from '@/lib/maps';
+import providerService, { ProviderSearchParams } from './provider.service';
+import serviceService from './service.service';
+import { getUserLocation } from './maps';
 import MapView from './map-view';
 
 export default function SearchPage() {
@@ -82,7 +82,7 @@ export default function SearchPage() {
       
       params.set('view', view);
       
-      router.push(`/search?${params.toString()}`, { scroll: false });
+      router.push(`/search?${params.toString()}`);
     }
   }, [filters, view, loading, router]);
 

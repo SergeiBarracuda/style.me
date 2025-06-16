@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { SearchProvider } from '@/contexts/SearchContext';
-import GoogleMapProvider from '@/components/maps/GoogleMapProvider';
+import GoogleMapProvider from '../GoogleMapProvider';
 import SearchForm from './SearchForm';
 import SearchFilters from './SearchFilters';
 import SearchResults from './SearchResults';

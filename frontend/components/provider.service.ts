@@ -1,13 +1,22 @@
 import api from './api';
 
+export interface ProviderSearchParams {
+  location?: string;
+  category?: string;
+  rating?: number;
+  price?: string;
+  availableNow?: boolean;
+  page?: number;
+  limit?: number;
+}
+
 // Provider service for handling provider operations
 class ProviderService {
   // Create provider profile
-  async createProviderProfile(profileData) {
+  async createProviderProfile(profileData: any): Promise<any> {
     try {
-      const response = await api.post('/providers/profile', profileData);
-      return response.data;
-    } catch (error) {
+      const response = await api.post('/providers/profile', profileData);      return response.data;
+    } catch (error: any) {
       throw error.response ? error.response.data : new Error('Failed to create provider profile');
     }
   }

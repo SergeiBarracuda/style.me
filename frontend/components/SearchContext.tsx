@@ -1,7 +1,7 @@
 'use client';
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import searchService from '../services/search.service';
+import searchService from './search.service';
 
 // Create search context
 const SearchContext = createContext(null);

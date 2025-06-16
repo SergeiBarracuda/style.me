@@ -2,36 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
-
-interface Message {
-  id: string;
-  senderId: number;
-  receiverId: number;
-  text: string;
-  timestamp: string;
-  isRead: boolean;
-  attachment?: {
-    type: 'image' | 'document';
-    url: string;
-    name: string;
-  };
-}
-
-interface Conversation {
-  id: string;
-  participants: {
-    id: number;
-    name: string;
-    photo: string;
-    role: 'provider' | 'client';
-  }[];
-  lastMessage: {
-    text: string;
-    timestamp: string;
-    senderId: number;
-  };
-  unreadCount: number;
-}
+import { Message, Conversation } from '../types/message.types';
 
 interface MessagingProps {
   userId: number;
@@ -74,9 +45,8 @@ export default function Messaging({ userId, userRole }: MessagingProps) {
                 photo: '/placeholder-profile.jpg',
                 role: 'client',
               },
-            ],
-            lastMessage: {
-              text: 'Looking forward to seeing you tomorrow!',
+            ],            lastMessage: {
+              content: 'Looking forward to seeing you tomorrow!',
               timestamp: '2025-04-26T14:30:00Z',
               senderId: 1,
             },
@@ -97,9 +67,8 @@ export default function Messaging({ userId, userRole }: MessagingProps) {
                 photo: '/placeholder-profile.jpg',
                 role: 'client',
               },
-            ],
-            lastMessage: {
-              text: 'Do you have any specific areas you want me to focus on during the massage?',
+            ],            lastMessage: {
+              content: 'Do you have any specific areas you want me to focus on during the massage?',
               timestamp: '2025-04-25T11:15:00Z',
               senderId: 2,
             },
@@ -122,7 +91,7 @@ export default function Messaging({ userId, userRole }: MessagingProps) {
               },
             ],
             lastMessage: {
-              text: 'I have a few nail design options to show you. Would you like to see them before your appointment?',
+              content: 'I have a few nail design options to show you. Would you like to see them before your appointment?',
               timestamp: '2025-04-24T16:45:00Z',
               senderId: 3,
             },
@@ -165,7 +134,7 @@ export default function Messaging({ userId, userRole }: MessagingProps) {
             id: 'msg-001',
             senderId: 101, // Client
             receiverId: 1, // Provider
-            text: 'Hi Sarah, I\'d like to book an appointment for a haircut next week.',
+            content: 'Hi Sarah, I\'d like to book an appointment for a haircut next week.',
             timestamp: '2025-04-25T10:00:00Z',
             isRead: true,
           },
@@ -173,7 +142,7 @@ export default function Messaging({ userId, userRole }: MessagingProps) {
             id: 'msg-002',
             senderId: 1, // Provider
             receiverId: 101, // Client
-            text: 'Hello John! I have availability on Tuesday at 2:30 PM or Thursday at 10:00 AM. Would either of those work for you?',
+            content: 'Hello John! I have availability on Tuesday at 2:30 PM or Thursday at 10:00 AM. Would either of those work for you?',
             timestamp: '2025-04-25T10:15:00Z',
             isRead: true,
           },
@@ -181,7 +150,7 @@ export default function Messaging({ userId, userRole }: MessagingProps) {
             id: 'msg-003',
             senderId: 101, // Client
             receiverId: 1, // Provider
-            text: 'Tuesday at 2:30 PM works perfectly for me.',
+            content: 'Tuesday at 2:30 PM works perfectly for me.',
             timestamp: '2025-04-25T10:30:00Z',
             isRead: true,
           },
@@ -189,7 +158,7 @@ export default function Messaging({ userId, userRole }: MessagingProps) {
             id: 'msg-004',
             senderId: 1, // Provider
             receiverId: 101, // Client
-            text: 'Great! I\'ve booked you in for Tuesday at 2:30 PM. Do you have any specific style in mind?',
+            content: 'Great! I\'ve booked you in for Tuesday at 2:30 PM. Do you have any specific style in mind?',
             timestamp: '2025-04-25T10:45:00Z',
             isRead: true,
           },
@@ -197,7 +166,7 @@ export default function Messaging({ userId, userRole }: MessagingProps) {
             id: 'msg-005',
             senderId: 101, // Client
             receiverId: 1, // Provider
-            text: 'I\'m thinking of trying a shorter style, maybe something like this:',
+            content: 'I\'m thinking of trying a shorter style, maybe something like this:',
             timestamp: '2025-04-25T11:00:00Z',
             isRead: true,
             attachment: {
@@ -210,7 +179,7 @@ export default function Messaging({ userId, userRole }: MessagingProps) {
             id: 'msg-006',
             senderId: 1, // Provider
             receiverId: 101, // Client
-            text: 'That\'s a great style and would suit your face shape well! I can definitely do that for you.',
+            content: 'That\'s a great style and would suit your face shape well! I can definitely do that for you.',
             timestamp: '2025-04-25T11:15:00Z',
             isRead: true,
           },
@@ -218,7 +187,7 @@ export default function Messaging({ userId, userRole }: MessagingProps) {
             id: 'msg-007',
             senderId: 1, // Provider
             receiverId: 101, // Client
-            text: 'Looking forward to seeing you tomorrow!',
+            content: 'Looking forward to seeing you tomorrow!',
             timestamp: '2025-04-26T14:30:00Z',
             isRead: false,
           },
@@ -297,10 +266,9 @@ export default function Messaging({ userId, userRole }: MessagingProps) {
       
       // Create new message
       const newMsg: Message = {
-        id: `msg-${Date.now()}`,
-        senderId: userId,
+        id: `msg-${Date.now()}`,        senderId: userId,
         receiverId: otherParticipant.id,
-        text: newMessage,
+        content: newMessage,
         timestamp: new Date().toISOString(),
         isRead: false,
       };
@@ -313,9 +281,8 @@ export default function Messaging({ userId, userRole }: MessagingProps) {
         prevConversations.map(conv => 
           conv.id === selectedConversation
             ? {
-                ...conv,
-                lastMessage: {
-                  text: newMessage,
+                ...conv,                lastMessage: {
+                  content: newMessage,
                   timestamp: new Date().toISOString(),
                   senderId: userId,
                 },
@@ -403,7 +370,7 @@ export default function Messaging({ userId, userRole }: MessagingProps) {
                           : 'text-gray-500 dark:text-gray-400'
                       }`}>
                         {conversation.lastMessage.senderId === userId ? 'You: ' : ''}
-                        {conversation.lastMessage.text}
+                        {conversation.lastMessage.content}
                       </p>
                     </div>
                   </div>
@@ -446,8 +413,7 @@ export default function Messaging({ userId, userRole }: MessagingProps) {
                 );
               })()}
               
-              {/* Messages List */}
-              <div className="flex-1 p-4 overflow-y-auto">
+              {/* Messages List */}              <div className="flex-1 p-4 overflow-y-auto">
                 <div className="space-y-4">
                   {messages.map((message) => {
                     const isOwnMessage = message.senderId === userId;
@@ -455,5 +421,55 @@ export default function Messaging({ userId, userRole }: MessagingProps) {
                     return (
                       <div
                         key={message.id}
-                        className={`
-(Content truncated due to size limit. Use line ranges to read in chunks)
+                        className={`flex ${isOwnMessage ? 'justify-end' : 'justify-start'}`}
+                      >
+                        <div
+                          className={`max-w-xs lg:max-w-md px-4 py-2 rounded-lg ${
+                            isOwnMessage
+                              ? 'bg-blue-500 text-white'
+                              : 'bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-white'
+                          }`}
+                        >
+                          <p className="text-sm">{message.content}</p>
+                          <p className="text-xs mt-1 opacity-70">
+                            {formatTimestamp(message.timestamp)}
+                          </p>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+              
+              {/* Message Input */}
+              <div className="p-4 border-t border-gray-200 dark:border-gray-700">
+                <div className="flex space-x-2">
+                  <input
+                    type="text"
+                    value={newMessage}
+                    onChange={(e) => setNewMessage(e.target.value)}
+                    onKeyPress={(e) => e.key === 'Enter' && !sendingMessage && handleSendMessage(e)}
+                    placeholder="Type a message..."
+                    className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
+                    disabled={sendingMessage}
+                  />
+                  <button
+                    onClick={handleSendMessage}
+                    disabled={sendingMessage || !newMessage.trim()}
+                    className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    {sendingMessage ? 'Sending...' : 'Send'}
+                  </button>
+                </div>
+              </div>
+            </>
+          ) : (
+            <div className="flex-1 flex items-center justify-center">
+              <p className="text-gray-500 dark:text-gray-400">Select a conversation to start messaging</p>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}

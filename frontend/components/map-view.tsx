@@ -1,9 +1,9 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import ProviderMap from '@/components/maps/ProviderMap';
+import ProviderMap from './ProviderMap';
 import { useTheme } from 'next-themes';
-import providerService, { Provider, ProviderSearchParams } from '@/lib/api/providerService';
+import providerService, { Provider, ProviderSearchParams } from './providerService';
 
 interface MapViewProps {
   filters: ProviderSearchParams;

@@ -10,7 +10,7 @@ import {
   LIGHT_MODE_STYLES, 
   DARK_MODE_STYLES,
   getUserLocation
-} from '@/lib/maps';
+} from './maps';
 
 interface Provider {
   id: number;

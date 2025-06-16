@@ -6,11 +6,10 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { 
   DEFAULT_CENTER, 
-  DEFAULT_ZOOM, 
-  LIGHT_MODE_STYLES, 
+  DEFAULT_ZOOM,   LIGHT_MODE_STYLES, 
   DARK_MODE_STYLES,
   getUserLocation
-} from '@/lib/maps';
+} from './maps';
 
 interface Provider {
   id: number;

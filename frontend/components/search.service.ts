@@ -1,11 +1,10 @@
 import api from './api';
 
 // Search service for handling search operations
-class SearchService {
-  // Search providers by location
+class SearchService {  // Search providers by location
   async searchProvidersByLocation(lat, lng, radius = 10, category = null) {
     try {
-      const params = { lat, lng, radius };
+      const params: any = { lat, lng, radius };
       if (category) params.category = category;
       
       const response = await api.get('/search/providers', { params });

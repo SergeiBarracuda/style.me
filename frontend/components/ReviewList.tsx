@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import ReviewCard from '@/components/reviews/ReviewCard';
+import ReviewCard from './ReviewCard';
 
 interface ReviewListProps {
   providerId?: number;

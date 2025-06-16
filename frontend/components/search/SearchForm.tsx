@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useSearch } from '@/contexts/SearchContext';
-import { getUserLocation } from '@/lib/maps';
+import { getUserLocation } from '../maps';
 
 interface SearchFormProps {
   className?: string;

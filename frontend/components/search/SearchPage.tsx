@@ -2,12 +2,12 @@
 
 import React, { useState } from 'react';
 import { SearchProvider } from '@/contexts/SearchContext';
-import GoogleMapProvider from '@/components/maps/GoogleMapProvider';
+import GoogleMapProvider from '../GoogleMapProvider';
 import SearchForm from './SearchForm';
 import SearchFilters from './SearchFilters';
 import SearchResults from './SearchResults';
 import ViewToggle from './ViewToggle';
-import MapView from '@/components/maps/map-view';
+import MapView from '../map-view';
 
 export default function SearchPage() {
   const [view, setView] = useState<'map' | 'list'>('map');

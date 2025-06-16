@@ -1,14 +1,34 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { SearchProvider } from '@/contexts/SearchContext';
-import GoogleMapProvider from '@/components/maps/GoogleMapProvider';
+import { SearchProvider } from '../contexts/SearchContext';
+import GoogleMapProvider from './GoogleMapProvider';
 import SearchForm from './SearchForm';
 import SearchFilters from './SearchFilters';
 import SearchResults from './SearchResults';
 import ViewToggle from './ViewToggle';
-import EnhancedMapView from '@/components/maps/EnhancedMapView';
-import { useSearch } from '@/contexts/SearchContext';
+import EnhancedMapView from './EnhancedMapView';
+import { useSearch } from '../contexts/SearchContext';
+
+// TypeScript interfaces
+interface Service {
+  id: number;
+  name: string;
+  price: number;
+}
+
+interface FeaturedProvider {
+  id: number;
+  businessName: string;
+  user: {
+    profilePhoto?: string;
+  };
+  averageRating?: number;
+  reviewCount: number;
+  location: string;
+  services: Service[];
+  verified: boolean;
+}
 
 // Main search page wrapper that provides context
 export default function EnhancedSearchPage() {
@@ -75,7 +95,7 @@ function SearchPageContent() {
 }
 
 // Intro section shown before search
-function IntroSection({ featuredProviders }) {
+function IntroSection({ featuredProviders }: { featuredProviders: FeaturedProvider[] }) {
   return (
     <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
       <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
@@ -115,7 +135,7 @@ function IntroSection({ featuredProviders }) {
 }
 
 // Featured provider card component
-function FeaturedProviderCard({ provider }) {
+function FeaturedProviderCard({ provider }: { provider: FeaturedProvider }) {
   return (
     <div className="bg-gray-50 dark:bg-gray-750 rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow">
       <div className="p-4">
@@ -138,7 +158,7 @@ function FeaturedProviderCard({ provider }) {
                 <svg
                   key={i}
                   className={`h-3 w-3 ${
-                    i < Math.floor(provider.averageRating)
+                    i < Math.floor(provider.averageRating || 0)
                       ? 'text-yellow-400'
                       : 'text-gray-300 dark:text-gray-600'
                   }`}
