@@ -1,12 +1,52 @@
 'use client';
 
 import React from 'react';
-import { useSearch } from '@/contexts/SearchContext';
+import { useSearch } from '../../contexts/SearchContext';
 import Link from 'next/link';
 import Image from 'next/image';
 
 interface SearchResultsProps {
   className?: string;
+}
+
+// Type definitions for provider and service results
+interface Provider {
+  id: string;
+  businessName: string;
+  user: {
+    firstName: string;
+    lastName: string;
+    profilePhoto?: string;
+  };
+  averageRating: number;
+  reviewCount: number;
+  address: string;
+  distance?: number;
+  services?: Array<{
+    id: string;
+    name: string;
+    price: number;
+  }>;
+  availableTimes?: string[];
+}
+
+interface Service {
+  id: string;
+  name: string;
+  price: number;
+  duration: number;
+  description?: string;
+  category: string;
+  imageUrl?: string;
+  provider: {
+    id: string;
+    businessName?: string;
+    user: {
+      firstName: string;
+      lastName: string;
+    };
+    averageRating?: number;
+  };
 }
 
 export default function SearchResults({ className = '' }: SearchResultsProps) {
@@ -99,7 +139,7 @@ export default function SearchResults({ className = '' }: SearchResultsProps) {
 }
 
 // Provider result card component
-function ProviderResultCard({ provider }) {
+function ProviderResultCard({ provider }: { provider: Provider }) {
   return (
     <div className="flex flex-col md:flex-row">
       <div className="flex-shrink-0 mb-4 md:mb-0 md:mr-4">
@@ -212,7 +252,7 @@ function ProviderResultCard({ provider }) {
 }
 
 // Service result card component
-function ServiceResultCard({ service }) {
+function ServiceResultCard({ service }: { service: Service }) {
   return (
     <div className="flex flex-col md:flex-row">
       <div className="flex-shrink-0 mb-4 md:mb-0 md:mr-4">
@@ -276,9 +316,9 @@ function ServiceResultCard({ service }) {
                 <svg
                   key={i}
                   className={`h-4 w-4 ${
-                    i < Math.floor(service.provider.averageRating)
+                    service.provider.averageRating && i < Math.floor(service.provider.averageRating)
                       ? 'text-yellow-400'
-                      : i < service.provider.averageRating
+                      : service.provider.averageRating && i < service.provider.averageRating
                       ? 'text-yellow-400 opacity-50'
                       : 'text-gray-300 dark:text-gray-600'
                   }`}

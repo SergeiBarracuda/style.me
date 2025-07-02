@@ -1,14 +1,57 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { SearchProvider } from '@/contexts/SearchContext';
+import { SearchProvider, useSearch } from '../../contexts/SearchContext';
 import GoogleMapProvider from '../GoogleMapProvider';
 import SearchForm from './SearchForm';
 import SearchFilters from './SearchFilters';
 import SearchResults from './SearchResults';
 import ViewToggle from './ViewToggle';
-import EnhancedMapView from '@/components/maps/EnhancedMapView';
-import { useSearch } from '@/contexts/SearchContext';
+import EnhancedMapView from '../EnhancedMapView';
+
+// Local type definitions for this component
+interface Provider {
+  id: string;
+  businessName: string;
+  averageRating: number;
+  reviewCount?: number;
+  verified?: boolean;
+  services: Service[];
+  user: {
+    firstName: string;
+    lastName: string;
+    profilePhoto?: string;
+  };
+  latitude?: number;
+  longitude?: number;
+  location?: {
+    coordinates?: [number, number];
+  };
+  distance?: number;
+  availableTimes?: string[];
+}
+
+interface Service {
+  id: string;
+  name: string;
+  price: number;
+  duration: number;
+  description?: string;
+  category: string;
+}
+
+interface SearchViewToggleProps {
+  view: 'map' | 'list';
+  onViewChange: (view: 'map' | 'list') => void;
+}
+
+interface IntroSectionProps {
+  featuredProviders: Provider[];
+}
+
+interface FeaturedProviderCardProps {
+  provider: Provider;
+}
 
 // Main search page wrapper that provides context
 export default function EnhancedSearchPage() {
@@ -26,6 +69,22 @@ function SearchPageContent() {
   const [view, setView] = useState<'map' | 'list'>('map');
   const { searchResults, loading, featuredProviders } = useSearch();
   const [showIntro, setShowIntro] = useState(true);
+
+  // Transform featuredProviders to match our local interface
+  const transformedFeaturedProviders: Provider[] = featuredProviders.map(provider => ({
+    id: provider.id,
+    businessName: provider.businessName,
+    averageRating: provider.averageRating,
+    reviewCount: provider.reviewCount,
+    verified: provider.verified,
+    services: provider.services || [],
+    user: provider.user,
+    latitude: provider.latitude,
+    longitude: provider.longitude,
+    location: provider.location,
+    distance: provider.distance,
+    availableTimes: provider.availableTimes,
+  }));
 
   // Hide intro when search results are available
   useEffect(() => {
@@ -56,7 +115,7 @@ function SearchPageContent() {
 
           {/* Show intro or search results based on state */}
           {showIntro && !loading && searchResults.length === 0 ? (
-            <IntroSection featuredProviders={featuredProviders} />
+            <IntroSection featuredProviders={transformedFeaturedProviders} />
           ) : (
             <>
               {view === 'map' ? (
@@ -75,7 +134,7 @@ function SearchPageContent() {
 }
 
 // Intro section shown before search
-function IntroSection({ featuredProviders }) {
+function IntroSection({ featuredProviders }: IntroSectionProps) {
   return (
     <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
       <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
@@ -92,7 +151,7 @@ function IntroSection({ featuredProviders }) {
       </h3>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {featuredProviders.slice(0, 6).map((provider) => (
+        {featuredProviders.slice(0, 6).map((provider: Provider) => (
           <FeaturedProviderCard key={provider.id} provider={provider} />
         ))}
       </div>
@@ -115,7 +174,7 @@ function IntroSection({ featuredProviders }) {
 }
 
 // Featured provider card component
-function FeaturedProviderCard({ provider }) {
+function FeaturedProviderCard({ provider }: FeaturedProviderCardProps) {
   return (
     <div className="bg-gray-50 dark:bg-gray-750 rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow">
       <div className="p-4">
@@ -138,7 +197,7 @@ function FeaturedProviderCard({ provider }) {
                 <svg
                   key={i}
                   className={`h-3 w-3 ${
-                    i < Math.floor(provider.averageRating)
+                    i < Math.floor(provider.averageRating || 0)
                       ? 'text-yellow-400'
                       : 'text-gray-300 dark:text-gray-600'
                   }`}
@@ -159,7 +218,7 @@ function FeaturedProviderCard({ provider }) {
           <div className="mt-3">
             <p className="text-xs text-gray-500 dark:text-gray-400">Popular services:</p>
             <div className="flex flex-wrap gap-1 mt-1">
-              {provider.services.slice(0, 2).map((service) => (
+              {provider.services.slice(0, 2).map((service: any) => (
                 <span
                   key={service.id}
                   className="text-xs text-gray-700 dark:text-gray-300"

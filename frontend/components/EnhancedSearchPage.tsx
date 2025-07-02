@@ -12,22 +12,31 @@ import { useSearch } from '../contexts/SearchContext';
 
 // TypeScript interfaces
 interface Service {
-  id: number;
+  id: string;
   name: string;
   price: number;
 }
 
 interface FeaturedProvider {
-  id: number;
+  id: string;
   businessName: string;
   user: {
+    firstName: string;
+    lastName: string;
     profilePhoto?: string;
   };
   averageRating?: number;
-  reviewCount: number;
-  location: string;
+  reviewCount?: number;
   services: Service[];
-  verified: boolean;
+  verified?: boolean;
+}
+
+interface IntroSectionProps {
+  featuredProviders: FeaturedProvider[];
+}
+
+interface FeaturedProviderCardProps {
+  provider: FeaturedProvider;
 }
 
 // Main search page wrapper that provides context
@@ -46,6 +55,17 @@ function SearchPageContent() {
   const [view, setView] = useState<'map' | 'list'>('map');
   const { searchResults, loading, featuredProviders } = useSearch();
   const [showIntro, setShowIntro] = useState(true);
+
+  // Transform featuredProviders to match FeaturedProvider interface
+  const transformedFeaturedProviders: FeaturedProvider[] = featuredProviders.map(provider => ({
+    id: provider.id,
+    businessName: provider.businessName,
+    user: provider.user,
+    averageRating: provider.averageRating,
+    reviewCount: provider.reviewCount,
+    services: provider.services || [],
+    verified: provider.verified,
+  }));
 
   // Hide intro when search results are available
   useEffect(() => {
@@ -76,7 +96,7 @@ function SearchPageContent() {
 
           {/* Show intro or search results based on state */}
           {showIntro && !loading && searchResults.length === 0 ? (
-            <IntroSection featuredProviders={featuredProviders} />
+            <IntroSection featuredProviders={transformedFeaturedProviders} />
           ) : (
             <>
               {view === 'map' ? (
@@ -95,7 +115,7 @@ function SearchPageContent() {
 }
 
 // Intro section shown before search
-function IntroSection({ featuredProviders }: { featuredProviders: FeaturedProvider[] }) {
+function IntroSection({ featuredProviders }: IntroSectionProps) {
   return (
     <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
       <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
@@ -135,7 +155,7 @@ function IntroSection({ featuredProviders }: { featuredProviders: FeaturedProvid
 }
 
 // Featured provider card component
-function FeaturedProviderCard({ provider }: { provider: FeaturedProvider }) {
+function FeaturedProviderCard({ provider }: FeaturedProviderCardProps) {
   return (
     <div className="bg-gray-50 dark:bg-gray-750 rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow">
       <div className="p-4">

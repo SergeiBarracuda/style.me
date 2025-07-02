@@ -1,12 +1,42 @@
 'use client';
 
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import searchService from '../components/search.service';
 
 // Define types
 interface Location {
   lat: number;
   lng: number;
+}
+
+interface Service {
+  id: string;
+  name: string;
+  price: number;
+  duration: number;
+  description?: string;
+  category: string;
+}
+
+interface Provider {
+  id: string;
+  businessName: string;
+  averageRating: number;
+  reviewCount?: number;
+  verified?: boolean;
+  services: Service[];
+  user: {
+    firstName: string;
+    lastName: string;
+    profilePhoto?: string;
+  };
+  latitude?: number;
+  longitude?: number;
+  location?: {
+    coordinates?: [number, number];
+  };
+  distance?: number;
+  availableTimes?: string[];
 }
 
 interface SearchFilters {
@@ -22,12 +52,12 @@ interface SearchFilters {
 }
 
 interface SearchContextType {
-  searchResults: any[];
+  searchResults: Provider[];
   loading: boolean;
   error: string | null;
   categories: string[];
-  featuredProviders: any[];
-  popularServices: any[];
+  featuredProviders: Provider[];
+  popularServices: Service[];
   searchFilters: SearchFilters;
   searchProvidersByLocation: (
     lat: number,
@@ -50,13 +80,13 @@ interface SearchContextType {
 const SearchContext = createContext<SearchContextType | null>(null);
 
 // Search provider component
-export const SearchProvider = ({ children }) => {
-  const [searchResults, setSearchResults] = useState<any[]>([]);
+export const SearchProvider = ({ children }: { children: ReactNode }) => {
+  const [searchResults, setSearchResults] = useState<Provider[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [categories, setCategories] = useState<string[]>([]);
-  const [featuredProviders, setFeaturedProviders] = useState<any[]>([]);
-  const [popularServices, setPopularServices] = useState<any[]>([]);
+  const [featuredProviders, setFeaturedProviders] = useState<Provider[]>([]);
+  const [popularServices, setPopularServices] = useState<Service[]>([]);
   const [searchFilters, setSearchFilters] = useState<SearchFilters>({
     location: null,
     category: null,
@@ -134,15 +164,15 @@ export const SearchProvider = ({ children }) => {
             break;
           case 'price_low':
             filteredResults.sort((a, b) => {
-              const aMinPrice = Math.min(...a.services.map(s => s.price));
-              const bMinPrice = Math.min(...b.services.map(s => s.price));
+              const aMinPrice = Math.min(...a.services.map((s: Service) => s.price));
+              const bMinPrice = Math.min(...b.services.map((s: Service) => s.price));
               return aMinPrice - bMinPrice;
             });
             break;
           case 'price_high':
             filteredResults.sort((a, b) => {
-              const aMaxPrice = Math.max(...a.services.map(s => s.price));
-              const bMaxPrice = Math.max(...b.services.map(s => s.price));
+              const aMaxPrice = Math.max(...a.services.map((s: Service) => s.price));
+              const bMaxPrice = Math.max(...b.services.map((s: Service) => s.price));
               return bMaxPrice - aMaxPrice;
             });
             break;
@@ -161,7 +191,7 @@ export const SearchProvider = ({ children }) => {
         ...additionalFilters
       });
       return filteredResults;
-    } catch (err) {
+    } catch (err: any) {
       setError(err.message || 'Search failed');
       throw err;
     } finally {
@@ -181,7 +211,7 @@ export const SearchProvider = ({ children }) => {
         keyword
       });
       return results;
-    } catch (err) {
+    } catch (err: any) {
       setError(err.message || 'Search failed');
       throw err;
     } finally {

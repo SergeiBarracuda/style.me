@@ -1,10 +1,14 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, ReactNode } from 'react';
 import { AppProvider } from './AppProvider';
 import { usePathname } from 'next/navigation';
 
-export function Providers({ children }) {
+interface ProvidersProps {
+  children: ReactNode;
+}
+
+export function Providers({ children }: ProvidersProps) {
   const pathname = usePathname();
 
   // Log navigation for debugging purposes

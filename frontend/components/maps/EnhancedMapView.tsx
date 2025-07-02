@@ -12,7 +12,7 @@ export default function EnhancedMapView() {
 
   // Transform providers to the format expected by ProviderMap
   const mapProviders = searchResults.map(provider => ({
-    id: provider.id,
+    id: parseInt(provider.id, 10) || 0,
     name: provider.businessName || `${provider.user.firstName} ${provider.user.lastName}`,
     profilePhoto: provider.user.profilePhoto || '/placeholder-profile.jpg',
     primaryService: provider.services && provider.services.length > 0 
