@@ -9,6 +9,46 @@ interface SearchResultsProps {
   className?: string;
 }
 
+// Type definitions for provider and service results
+interface Provider {
+  id: string;
+  businessName: string;
+  user: {
+    firstName: string;
+    lastName: string;
+    profilePhoto?: string;
+  };
+  averageRating: number;
+  reviewCount: number;
+  address: string;
+  distance?: number;
+  services?: Array<{
+    id: string;
+    name: string;
+    price: number;
+  }>;
+  availableTimes?: string[];
+}
+
+interface Service {
+  id: string;
+  name: string;
+  price: number;
+  duration: number;
+  description?: string;
+  category: string;
+  imageUrl?: string;
+  provider: {
+    id: string;
+    businessName?: string;
+    user: {
+      firstName: string;
+      lastName: string;
+    };
+    averageRating?: number;
+  };
+}
+
 export default function SearchResults({ className = '' }: SearchResultsProps) {
   const { searchResults, loading, error } = useSearch();
 
@@ -60,7 +100,7 @@ export default function SearchResults({ className = '' }: SearchResultsProps) {
   }
 
   // Determine if results are providers or services
-  const isProviderResults = searchResults[0].hasOwnProperty('businessName');
+  const isProviderResults = searchResults.length > 0 && 'businessName' in searchResults[0];
 
   return (
     <div className={`bg-white dark:bg-gray-800 rounded-lg shadow-md ${className}`}>
@@ -99,7 +139,7 @@ export default function SearchResults({ className = '' }: SearchResultsProps) {
 }
 
 // Provider result card component
-function ProviderResultCard({ provider }) {
+function ProviderResultCard({ provider }: { provider: Provider }) {
   return (
     <div className="flex flex-col md:flex-row">
       <div className="flex-shrink-0 mb-4 md:mb-0 md:mr-4">
@@ -169,7 +209,7 @@ function ProviderResultCard({ provider }) {
           <div className="mt-3">
             <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300">Services:</h4>
             <div className="flex flex-wrap gap-2 mt-1">
-              {provider.services.slice(0, 3).map((service) => (
+              {provider.services.slice(0, 3).map((service: any) => (
                 <span
                   key={service.id}
                   className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200"
@@ -190,7 +230,7 @@ function ProviderResultCard({ provider }) {
           <div className="mt-2">
             <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300">Available Today:</h4>
             <div className="flex flex-wrap gap-1 mt-1">
-              {provider.availableTimes.slice(0, 4).map((time, index) => (
+              {provider.availableTimes.slice(0, 4).map((time: string, index: number) => (
                 <span
                   key={index}
                   className="px-2 py-1 text-xs bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200 rounded"
@@ -212,7 +252,7 @@ function ProviderResultCard({ provider }) {
 }
 
 // Service result card component
-function ServiceResultCard({ service }) {
+function ServiceResultCard({ service }: { service: Service }) {
   return (
     <div className="flex flex-col md:flex-row">
       <div className="flex-shrink-0 mb-4 md:mb-0 md:mr-4">
@@ -272,22 +312,25 @@ function ServiceResultCard({ service }) {
             </Link>
 
             <div className="flex items-center mt-1">
-              {[...Array(5)].map((_, i) => (
-                <svg
-                  key={i}
-                  className={`h-4 w-4 ${
-                    i < Math.floor(service.provider.averageRating)
-                      ? 'text-yellow-400'
-                      : i < service.provider.averageRating
-                      ? 'text-yellow-400 opacity-50'
-                      : 'text-gray-300 dark:text-gray-600'
-                  }`}
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                >
-                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                </svg>
-              ))}
+              {[...Array(5)].map((_, i) => {
+                const rating = service.provider.averageRating || 0;
+                return (
+                  <svg
+                    key={i}
+                    className={`h-4 w-4 ${
+                      i < Math.floor(rating)
+                        ? 'text-yellow-400'
+                        : i < rating
+                        ? 'text-yellow-400 opacity-50'
+                        : 'text-gray-300 dark:text-gray-600'
+                    }`}
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                  </svg>
+                );
+              })}
               <span className="ml-1 text-xs text-gray-600 dark:text-gray-400">
                 {service.provider.averageRating?.toFixed(1) || 'N/A'}
               </span>
