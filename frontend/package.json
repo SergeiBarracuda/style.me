@@ -7,7 +7,6 @@
     "build": "next build",
     "start": "next start -p $PORT",
     "lint": "next lint",
-    "export": "next export",
     "heroku-postbuild": "npm run build"
   },
   "engines": {
@@ -15,28 +14,26 @@
     "npm": "9.x"
   },
   "dependencies": {
-    "@googlemaps/js-api-loader": "^1.15.1",
-    "@headlessui/react": "^1.7.14",
-    "@heroicons/react": "^2.0.17",
-    "@react-google-maps/api": "^2.20.6",
-    "axios": "^1.4.0",
+    "@headlessui/react": "^1.7.17",
+    "@heroicons/react": "^2.0.18",
+    "axios": "^1.6.0",
     "js-cookie": "^3.0.5",
-    "next": "13.4.1",
-    "next-themes": "^0.4.6",
+    "next": "14.0.3",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "react-hook-form": "^7.43.9",
-    "typescript": "5.0.4"
+    "react-hook-form": "^7.47.0",
+    "typescript": "5.2.2"
   },
   "devDependencies": {
-    "@types/js-cookie": "^3.0.3",
-    "@types/node": "18.16.3",
-    "@types/react": "18.2.5",
-    "@types/react-dom": "18.2.3",
-    "autoprefixer": "10.4.14",
-    "eslint": "8.39.0",
-    "eslint-config-next": "13.4.1",
-    "postcss": "8.4.23",
-    "tailwindcss": "3.3.2"
+    "@types/js-cookie": "^3.0.6",
+    "@types/node": "20.8.10",
+    "@types/react": "18.2.37",
+    "@types/react-dom": "18.2.15",
+    "autoprefixer": "10.4.16",
+    "eslint": "8.53.0",
+    "eslint-config-next": "14.0.3",
+    "postcss": "8.4.31",
+    "tailwindcss": "3.3.5"
   }
 }
+

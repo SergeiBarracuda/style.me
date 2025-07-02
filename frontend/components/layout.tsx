@@ -1,28 +1,23 @@
-import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
-import './globals.css';
-import Layout from './MainLayout';
-import { ThemeProvider } from './ThemeProvider';
+import React, { ReactNode } from 'react';
+import Header from './Header';
+import Footer from './Footer';
 
-const inter = Inter({ subsets: ['latin'] });
+interface LayoutProps {
+  children: ReactNode;
+  user?: any;
+}
 
-export const metadata: Metadata = {
-  title: 'Beauty Service Marketplace',
-  description: 'Connect with beauty service providers in your area',
+const Layout: React.FC<LayoutProps> = ({ children, user }) => {
+  return (
+    <div className="min-h-screen flex flex-col">
+      <Header user={user} />
+      <main className="flex-1">
+        {children}
+      </main>
+      <Footer />
+    </div>
+  );
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  return (
-    <html lang="en">
-      <body className={inter.className}>
-        <ThemeProvider>
-          <Layout>{children}</Layout>
-        </ThemeProvider>
-      </body>
-    </html>
-  );
-}
+export default Layout;
+
