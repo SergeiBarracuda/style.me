@@ -20,7 +20,7 @@ interface Provider {
   };
   averageRating: number;
   reviewCount: number;
-  address: string;
+  address?: string;
   distance?: number;
   services?: Array<{
     id: string;
@@ -114,9 +114,12 @@ export default function SearchResults({ className = '' }: SearchResultsProps) {
         {searchResults.map((result) => (
           <div key={result.id} className="p-4 hover:bg-gray-50 dark:hover:bg-gray-750 transition-colors">
             {isProviderResults ? (
-              <ProviderResultCard provider={result} />
+              <ProviderResultCard provider={result as Provider} />
             ) : (
-              <ServiceResultCard service={result} />
+              // Type guard to ensure result is a Service
+              'name' in result && 'price' in result && 'duration' in result && 'category' in result && 'provider' in result ? (
+                <ServiceResultCard service={result as Service} />
+              ) : null
             )}
           </div>
         ))}
