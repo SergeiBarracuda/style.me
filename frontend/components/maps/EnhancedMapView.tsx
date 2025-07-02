@@ -15,12 +15,12 @@ export default function EnhancedMapView() {
     id: parseInt(provider.id, 10) || 0,
     name: provider.businessName || `${provider.user.firstName} ${provider.user.lastName}`,
     profilePhoto: provider.user.profilePhoto || '/placeholder-profile.jpg',
-    primaryService: provider.services && provider.services.length > 0 
-      ? provider.services[0].name 
+    primaryService: provider.services && provider.services.length > 0
+      ? provider.services[0].name
       : 'Service Provider',
     rating: provider.averageRating,
-    location: { 
-      lat: provider.latitude || (provider.location?.coordinates?.[1] || 0), 
+    location: {
+      lat: provider.latitude || (provider.location?.coordinates?.[1] || 0),
       lng: provider.longitude || (provider.location?.coordinates?.[0] || 0)
     },
     distance: provider.distance ? `${provider.distance.toFixed(1)} miles` : undefined,
@@ -31,11 +31,11 @@ export default function EnhancedMapView() {
   const getMapCenter = () => {
     if (searchResults.length > 0) {
       // Calculate the average of all provider locations
-      const totalLat = searchResults.reduce((sum, provider) => 
+      const totalLat = searchResults.reduce((sum, provider) =>
         sum + (provider.latitude || (provider.location?.coordinates?.[1] || 0)), 0);
-      const totalLng = searchResults.reduce((sum, provider) => 
+      const totalLng = searchResults.reduce((sum, provider) =>
         sum + (provider.longitude || (provider.location?.coordinates?.[0] || 0)), 0);
-      
+
       return {
         lat: totalLat / searchResults.length,
         lng: totalLng / searchResults.length
@@ -44,7 +44,7 @@ export default function EnhancedMapView() {
       // Use the search location
       return searchFilters.location;
     }
-    
+
     // Default to New York City if no results or search location
     return { lat: 40.7128, lng: -74.0060 };
   };
@@ -81,7 +81,7 @@ export default function EnhancedMapView() {
           </svg>
         </div>
         <p className="text-center text-gray-700 dark:text-gray-300">{error}</p>
-        <button 
+        <button
           onClick={() => window.location.reload()}
           className="mt-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
         >
@@ -107,8 +107,8 @@ export default function EnhancedMapView() {
 
   return (
     <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden h-[600px]">
-      <EnhancedProviderMap 
-        providers={mapProviders} 
+      <EnhancedProviderMap
+        providers={mapProviders}
         isDarkMode={isDarkMode}
         center={getMapCenter()}
         zoom={getZoomLevel()}
@@ -120,4 +120,3 @@ export default function EnhancedMapView() {
     </div>
   );
 }
-
