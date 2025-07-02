@@ -1,13 +1,44 @@
 'use client';
 
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import searchService from './search.service';
 
+// Types
+interface SearchFilters {
+  location: any;
+  category: any;
+  keyword: string;
+  priceRange?: [number, number];
+  rating?: number;
+  radius: number;
+  sortBy?: string;
+}
+
+interface SearchContextType {
+  searchResults: any[];
+  loading: boolean;
+  error: string | null;
+  categories: any[];
+  featuredProviders: any[];
+  popularServices: any[];
+  searchFilters: SearchFilters;
+  searchProvidersByLocation: (lat: number, lng: number, radius: number, category: string) => Promise<any>;
+  searchServicesByKeyword: (keyword: string) => Promise<any>;
+  clearSearchResults: () => void;
+  loadCategories: () => Promise<void>;
+  loadFeaturedProviders: () => Promise<void>;
+  loadPopularServices: () => Promise<void>;
+}
+
+interface SearchProviderProps {
+  children: ReactNode;
+}
+
 // Create search context
-const SearchContext = createContext(null);
+const SearchContext = createContext<SearchContextType | null>(null);
 
 // Search provider component
-export const SearchProvider = ({ children }) => {
+export const SearchProvider = ({ children }: SearchProviderProps) => {
   const [searchResults, setSearchResults] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -54,7 +85,7 @@ export const SearchProvider = ({ children }) => {
   }, []);
 
   // Search providers by location
-  const searchProvidersByLocation = async (lat, lng, radius, category) => {
+  const searchProvidersByLocation = async (lat: number, lng: number, radius: number, category: string) => {
     setLoading(true);
     setError(null);
     try {
@@ -67,7 +98,7 @@ export const SearchProvider = ({ children }) => {
         category
       });
       return results;
-    } catch (err) {
+    } catch (err: any) {
       setError(err.message || 'Search failed');
       throw err;
     } finally {
@@ -76,7 +107,7 @@ export const SearchProvider = ({ children }) => {
   };
 
   // Search services by keyword
-  const searchServicesByKeyword = async (keyword) => {
+  const searchServicesByKeyword = async (keyword: string) => {
     setLoading(true);
     setError(null);
     try {
@@ -87,7 +118,7 @@ export const SearchProvider = ({ children }) => {
         keyword
       });
       return results;
-    } catch (err) {
+    } catch (err: any) {
       setError(err.message || 'Search failed');
       throw err;
     } finally {
@@ -124,7 +155,7 @@ export const SearchProvider = ({ children }) => {
 };
 
 // Custom hook to use search context
-export const useSearch = () => {
+export const useSearch = (): SearchContextType => {
   const context = useContext(SearchContext);
   if (!context) {
     throw new Error('useSearch must be used within a SearchProvider');
