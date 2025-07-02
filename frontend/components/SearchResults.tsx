@@ -32,7 +32,7 @@ export default function SearchResults({ className = '' }: SearchResultsProps) {
             </svg>
           </div>
           <p className="text-center text-gray-700 dark:text-gray-300">{error}</p>
-          <button 
+          <button
             onClick={() => window.location.reload()}
             className="mt-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
           >
@@ -112,7 +112,7 @@ function ProviderResultCard({ provider }) {
           />
         </div>
       </div>
-      
+
       <div className="flex-grow">
         <div className="flex flex-col md:flex-row md:justify-between md:items-start">
           <div>
@@ -122,7 +122,7 @@ function ProviderResultCard({ provider }) {
             <p className="text-sm text-gray-600 dark:text-gray-400">
               {provider.user.firstName} {provider.user.lastName}
             </p>
-            
+
             <div className="flex items-center mt-1">
               {[...Array(5)].map((_, i) => (
                 <svg
@@ -144,7 +144,7 @@ function ProviderResultCard({ provider }) {
                 {provider.averageRating.toFixed(1)} ({provider.reviewCount})
               </span>
             </div>
-            
+
             <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
               {provider.address}
               {provider.distance && (
@@ -154,7 +154,7 @@ function ProviderResultCard({ provider }) {
               )}
             </p>
           </div>
-          
+
           <div className="mt-3 md:mt-0">
             <Link
               href={`/provider/${provider.id}`}
@@ -164,7 +164,7 @@ function ProviderResultCard({ provider }) {
             </Link>
           </div>
         </div>
-        
+
         {provider.services && provider.services.length > 0 && (
           <div className="mt-3">
             <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300">Services:</h4>
@@ -185,7 +185,7 @@ function ProviderResultCard({ provider }) {
             </div>
           </div>
         )}
-        
+
         {provider.availableTimes && provider.availableTimes.length > 0 && (
           <div className="mt-2">
             <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300">Available Today:</h4>
@@ -233,14 +233,14 @@ function ServiceResultCard({ service }) {
           )}
         </div>
       </div>
-      
+
       <div className="flex-grow">
         <div className="flex flex-col md:flex-row md:justify-between md:items-start">
           <div>
             <h3 className="text-lg font-medium text-gray-900 dark:text-white">
               {service.name}
             </h3>
-            
+
             <div className="flex items-center mt-1">
               <span className="text-lg font-medium text-gray-900 dark:text-white">
                 ${service.price.toFixed(2)}
@@ -249,20 +249,20 @@ function ServiceResultCard({ service }) {
                 ({service.duration} min)
               </span>
             </div>
-            
+
             <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
               {service.description && service.description.length > 100
                 ? `${service.description.substring(0, 100)}...`
                 : service.description}
             </p>
-            
+
             <div className="mt-2">
               <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200">
                 {service.category}
               </span>
             </div>
           </div>
-          
+
           <div className="mt-3 md:mt-0 flex flex-col items-end">
             <Link
               href={`/provider/${service.provider.id}`}
@@ -270,7 +270,7 @@ function ServiceResultCard({ service }) {
             >
               {service.provider.businessName || `${service.provider.user.firstName} ${service.provider.user.lastName}`}
             </Link>
-            
+
             <div className="flex items-center mt-1">
               {[...Array(5)].map((_, i) => (
                 <svg
@@ -292,7 +292,7 @@ function ServiceResultCard({ service }) {
                 {service.provider.averageRating?.toFixed(1) || 'N/A'}
               </span>
             </div>
-            
+
             <Link
               href={`/booking/${service.id}`}
               className="mt-2 inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
@@ -305,4 +305,3 @@ function ServiceResultCard({ service }) {
     </div>
   );
 }
-
