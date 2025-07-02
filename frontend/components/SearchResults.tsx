@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { useSearch } from '@/contexts/SearchContext';
+import { useSearch } from '../contexts/SearchContext';
 import Link from 'next/link';
 import Image from 'next/image';
 
