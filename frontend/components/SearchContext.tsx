@@ -22,7 +22,7 @@ interface SearchContextType {
   featuredProviders: any[];
   popularServices: any[];
   searchFilters: SearchFilters;
-  searchProvidersByLocation: (lat: number, lng: number, radius: number, category: string) => Promise<any>;
+  searchProvidersByLocation: (lat: number, lng: number, radius: number, category: string | null) => Promise<any>;
   searchServicesByKeyword: (keyword: string) => Promise<any>;
   clearSearchResults: () => void;
   loadCategories: () => Promise<void>;
@@ -39,30 +39,51 @@ const SearchContext = createContext<SearchContextType | null>(null);
 
 // Search provider component
 export const SearchProvider = ({ children }: SearchProviderProps) => {
-  const [searchResults, setSearchResults] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-  const [categories, setCategories] = useState([]);
-  const [featuredProviders, setFeaturedProviders] = useState([]);
-  const [popularServices, setPopularServices] = useState([]);
-  const [searchFilters, setSearchFilters] = useState({
+  const [searchResults, setSearchResults] = useState<any[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
+  const [categories, setCategories] = useState<any[]>([]);
+  const [featuredProviders, setFeaturedProviders] = useState<any[]>([]);
+  const [popularServices, setPopularServices] = useState<any[]>([]);
+  const [searchFilters, setSearchFilters] = useState<SearchFilters>({
     location: null,
     category: null,
     keyword: '',
     radius: 10
   });
 
+  // Load categories
+  const loadCategories = async () => {
+    try {
+      const data = await searchService.getServiceCategories();
+      setCategories(data);
+    } catch (err: any) {
+      console.error('Failed to load categories:', err);
+    }
+  };
+
+  // Load featured providers
+  const loadFeaturedProviders = async () => {
+    try {
+      const data = await searchService.getFeaturedProviders();
+      setFeaturedProviders(data);
+    } catch (err: any) {
+      console.error('Failed to load featured providers:', err);
+    }
+  };
+
+  // Load popular services
+  const loadPopularServices = async () => {
+    try {
+      const data = await searchService.getPopularServices();
+      setPopularServices(data);
+    } catch (err: any) {
+      console.error('Failed to load popular services:', err);
+    }
+  };
+
   // Load categories on mount
   useEffect(() => {
-    const loadCategories = async () => {
-      try {
-        const data = await searchService.getServiceCategories();
-        setCategories(data);
-      } catch (err) {
-        console.error('Failed to load categories:', err);
-      }
-    };
-
     loadCategories();
   }, []);
 
@@ -76,7 +97,7 @@ export const SearchProvider = ({ children }: SearchProviderProps) => {
         ]);
         setFeaturedProviders(providers);
         setPopularServices(services);
-      } catch (err) {
+      } catch (err: any) {
         console.error('Failed to load featured data:', err);
       }
     };
@@ -85,7 +106,7 @@ export const SearchProvider = ({ children }: SearchProviderProps) => {
   }, []);
 
   // Search providers by location
-  const searchProvidersByLocation = async (lat: number, lng: number, radius: number, category: string) => {
+  const searchProvidersByLocation = async (lat: number, lng: number, radius: number, category: string | null) => {
     setLoading(true);
     setError(null);
     try {
@@ -148,7 +169,10 @@ export const SearchProvider = ({ children }: SearchProviderProps) => {
     searchFilters,
     searchProvidersByLocation,
     searchServicesByKeyword,
-    clearSearchResults
+    clearSearchResults,
+    loadCategories,
+    loadFeaturedProviders,
+    loadPopularServices
   };
 
   return <SearchContext.Provider value={value}>{children}</SearchContext.Provider>;
