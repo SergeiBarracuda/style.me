@@ -70,7 +70,7 @@ jest.mock('../../lib/maps', () => ({
 describe('Search Integration Tests', () => {
   // Mock data
   const mockCategories = ['Hair', 'Nails', 'Makeup', 'Spa'];
-  
+
   const mockFeaturedProviders = [
     {
       id: 1,
@@ -86,7 +86,7 @@ describe('Search Integration Tests', () => {
       ]
     }
   ];
-  
+
   const mockSearchResults = [
     {
       id: 2,
@@ -125,14 +125,14 @@ describe('Search Integration Tests', () => {
       availableTimes: ['11:00 AM', '3:00 PM']
     }
   ];
-  
+
   // Mock the SearchProvider component
   const mockSearchProvidersByLocation = jest.fn().mockResolvedValue(mockSearchResults);
   const mockSearchServicesByKeyword = jest.fn().mockResolvedValue([]);
-  
+
   beforeEach(() => {
     jest.clearAllMocks();
-    
+
     // Create a spy on the SearchProvider component
     jest.spyOn(SearchContextModule, 'SearchProvider').mockImplementation(({ children }) => {
       return (
@@ -163,14 +163,14 @@ describe('Search Integration Tests', () => {
 
   test('initial render shows intro section with featured providers', () => {
     render(<EnhancedSearchPage />);
-    
+
     // Check for intro section
     expect(screen.getByText('Welcome to Beauty Service Marketplace')).toBeInTheDocument();
-    
+
     // Check for featured providers
     expect(screen.getByText('Featured Providers')).toBeInTheDocument();
     expect(screen.getByText('Featured Hair Studio')).toBeInTheDocument();
-    
+
     // Check that view toggle is not shown initially
     expect(screen.queryByText('List')).not.toBeInTheDocument();
     expect(screen.queryByText('Map')).not.toBeInTheDocument();
@@ -179,13 +179,13 @@ describe('Search Integration Tests', () => {
   test('search form submission triggers location search and updates results', async () => {
     // Update the mock to return search results
     const updatedSearchProvider = jest.spyOn(SearchContextModule, 'SearchProvider');
-    
+
     // First render with empty results
     const { rerender } = render(<EnhancedSearchPage />);
-    
+
     // Submit the search form
     fireEvent.click(screen.getByRole('button', { name: 'Search' }));
-    
+
     // Wait for the geolocation and API call
     await waitFor(() => {
       expect(mapsUtils.getUserLocation).toHaveBeenCalled();
@@ -196,7 +196,7 @@ describe('Search Integration Tests', () => {
         null // No category selected
       );
     });
-    
+
     // Update the mock to return search results
     updatedSearchProvider.mockImplementation(({ children }) => {
       return (
@@ -223,18 +223,18 @@ describe('Search Integration Tests', () => {
         </SearchContextModule.SearchContext.Provider>
       );
     });
-    
+
     // Re-render with search results
     rerender(<EnhancedSearchPage />);
-    
+
     // Check that view toggle is now shown
     expect(screen.getByText('List')).toBeInTheDocument();
     expect(screen.getByText('Map')).toBeInTheDocument();
-    
+
     // Check that map view is shown by default
     expect(screen.getByTestId('enhanced-provider-map')).toBeInTheDocument();
     expect(screen.getByTestId('provider-count')).toHaveTextContent('2');
-    
+
     // Check that providers are shown on the map
     expect(screen.getByTestId('map-provider-2')).toHaveTextContent('Hair Studio');
     expect(screen.getByTestId('map-provider-3')).toHaveTextContent('Nail Salon');
@@ -242,7 +242,7 @@ describe('Search Integration Tests', () => {
 
   test('view toggle switches between map and list views', async () => {
     // Mock with search results
-    jest.spyOn(SearchContextModule, 'SearchProvider').mockImplementation(({ children }) => {
+    jest.spyOn(SearchContextModule, 'SearchProvider').mockImplementation(({ children }: { children: React.ReactNode }) => {
       return (
         <SearchContextModule.SearchContext.Provider
           value={{
@@ -267,26 +267,26 @@ describe('Search Integration Tests', () => {
         </SearchContextModule.SearchContext.Provider>
       );
     });
-    
+
     render(<EnhancedSearchPage />);
-    
+
     // Check that map view is shown by default
     expect(screen.getByTestId('enhanced-provider-map')).toBeInTheDocument();
-    
+
     // Click the list view toggle
     fireEvent.click(screen.getByText('List'));
-    
+
     // Check that list view is now shown
     expect(screen.queryByTestId('enhanced-provider-map')).not.toBeInTheDocument();
     expect(screen.getByText('2 Providers Found')).toBeInTheDocument();
-    
+
     // Check that providers are shown in the list
     expect(screen.getByText('Hair Studio')).toBeInTheDocument();
     expect(screen.getByText('Nail Salon')).toBeInTheDocument();
-    
+
     // Click the map view toggle
     fireEvent.click(screen.getByText('Map'));
-    
+
     // Check that map view is shown again
     expect(screen.getByTestId('enhanced-provider-map')).toBeInTheDocument();
   });
@@ -318,17 +318,17 @@ describe('Search Integration Tests', () => {
         </SearchContextModule.SearchContext.Provider>
       );
     });
-    
+
     render(<EnhancedSearchPage />);
-    
+
     // Select a category filter
     fireEvent.change(screen.getByLabelText('Category'), {
       target: { value: 'Hair' }
     });
-    
+
     // Click the apply filters button
     fireEvent.click(screen.getByRole('button', { name: 'Apply Filters' }));
-    
+
     // Wait for the API call
     await waitFor(() => {
       expect(mockSearchProvidersByLocation).toHaveBeenCalledWith(
@@ -341,4 +341,3 @@ describe('Search Integration Tests', () => {
     });
   });
 });
-
