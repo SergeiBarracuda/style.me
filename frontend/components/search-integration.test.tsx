@@ -1,10 +1,9 @@
 import type { ReactNode } from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import EnhancedSearchPage from '../../components/search/EnhancedSearchPage';
+import EnhancedSearchPage from '../search/EnhancedSearchPage';
 import * as SearchContextModule from '../../contexts/SearchContext';
 import * as mapsUtils from '../../lib/maps';
-
 /** Mock for next/image */
 jest.mock('next/image', () => ({
   __esModule: true,
