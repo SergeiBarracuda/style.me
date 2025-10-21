@@ -5,6 +5,7 @@ import { authService } from '../lib/auth';
 import Layout from '../components/Layout';
 import { ThemeProvider } from '../components/ThemeProvider';
 import { User } from '../types';
+import { registerServiceWorker } from '../lib/pwa';
 
 export default function App({ Component, pageProps }: AppProps) {
   const [user, setUser] = useState<User | null>(null);
@@ -26,6 +27,13 @@ export default function App({ Component, pageProps }: AppProps) {
     };
 
     initAuth();
+  }, []);
+
+  // Register service worker for PWA
+  useEffect(() => {
+    if (process.env.NODE_ENV === 'production') {
+      registerServiceWorker();
+    }
   }, []);
 
   if (loading) {
