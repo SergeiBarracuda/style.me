@@ -117,12 +117,68 @@ export default function EnhancedProviderMap({
     setSelectedProvider(null);
   };
 
+  // Create custom marker icon for each provider using their profile photo
+  const createCustomMarker = (provider: Provider) => {
+    // Create a circular marker with provider's photo
+    const canvas = document.createElement('canvas');
+    const size = 50;
+    canvas.width = size;
+    canvas.height = size;
+    const ctx = canvas.getContext('2d');
+
+    if (ctx) {
+      // Draw circle background
+      ctx.beginPath();
+      ctx.arc(size / 2, size / 2, size / 2, 0, 2 * Math.PI);
+      ctx.fillStyle = '#fff';
+      ctx.fill();
+      ctx.lineWidth = 3;
+      ctx.strokeStyle = '#db2777'; // primary-600
+      ctx.stroke();
+
+      // Create image element for provider photo
+      const img = new Image();
+      img.crossOrigin = 'anonymous';
+      img.src = provider.profilePhoto || '/placeholder-profile.jpg';
+
+      // Return a data URL for the canvas
+      return {
+        url: canvas.toDataURL(),
+        scaledSize: new google.maps.Size(size, size),
+        anchor: new google.maps.Point(size / 2, size / 2),
+      };
+    }
+
+    // Fallback to default marker
+    return {
+      url: '/marker-icon.png',
+      scaledSize: new google.maps.Size(40, 40),
+    };
+  };
+
   // Clusterer options
   const clustererOptions = {
     imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m',
     gridSize: 50,
     minimumClusterSize: 3,
     maxZoom: 15
+  };
+
+  // Generate navigation URLs
+  const getNavigationUrl = (provider: Provider, mode: 'walking' | 'transit' | 'driving') => {
+    const dest = `${provider.location.lat},${provider.location.lng}`;
+    const origin = `${mapCenter.lat},${mapCenter.lng}`;
+
+    switch (mode) {
+      case 'walking':
+        return `https://www.google.com/maps/dir/?api=1&origin=${origin}&destination=${dest}&travelmode=walking`;
+      case 'transit':
+        return `https://www.google.com/maps/dir/?api=1&origin=${origin}&destination=${dest}&travelmode=transit`;
+      case 'driving':
+        return `https://www.google.com/maps/dir/?api=1&origin=${origin}&destination=${dest}&travelmode=driving`;
+      default:
+        return `https://www.google.com/maps/dir/?api=1&origin=${origin}&destination=${dest}`;
+    }
   };
 
   // Calculate search radius in meters
@@ -195,10 +251,7 @@ export default function EnhancedProviderMap({
                         position={provider.location}
                         onClick={() => handleMarkerClick(provider)}
                         clusterer={clusterer}
-                        icon={{
-                          url: '/marker-icon.png', // This would be a custom marker icon
-                          scaledSize: new google.maps.Size(40, 40),
-                        }}
+                        icon={createCustomMarker(provider)}
                       />
                     ))}
                   </>
@@ -211,10 +264,7 @@ export default function EnhancedProviderMap({
                   key={provider.id}
                   position={provider.location}
                   onClick={() => handleMarkerClick(provider)}
-                  icon={{
-                    url: '/marker-icon.png', // This would be a custom marker icon
-                    scaledSize: new google.maps.Size(40, 40),
-                  }}
+                  icon={createCustomMarker(provider)}
                 />
               ))
             )}
@@ -287,32 +337,53 @@ export default function EnhancedProviderMap({
                     </div>
                   )}
 
-                  <div className="mt-3 flex justify-between">
-                    <div className="flex space-x-1">
-                      <button className="p-1 text-xs bg-gray-100 text-gray-800 rounded hover:bg-gray-200">
-                        <svg className="h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                  <div className="mt-3">
+                    <p className="text-xs font-medium text-gray-700 mb-2">Get Directions:</p>
+                    <div className="flex space-x-2 mb-2">
+                      <a
+                        href={getNavigationUrl(selectedProvider, 'walking')}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex-1 p-2 text-xs bg-green-100 text-green-800 rounded hover:bg-green-200 flex flex-col items-center"
+                        title="Walking directions"
+                      >
+                        <svg className="h-4 w-4 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                         </svg>
-                      </button>
-                      <button className="p-1 text-xs bg-gray-100 text-gray-800 rounded hover:bg-gray-200">
-                        <svg className="h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+                        <span>Walk</span>
+                      </a>
+                      <a
+                        href={getNavigationUrl(selectedProvider, 'transit')}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex-1 p-2 text-xs bg-blue-100 text-blue-800 rounded hover:bg-blue-200 flex flex-col items-center"
+                        title="Public transit directions"
+                      >
+                        <svg className="h-4 w-4 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
                         </svg>
-                      </button>
-                      <button className="p-1 text-xs bg-gray-100 text-gray-800 rounded hover:bg-gray-200">
-                        <svg className="h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <span>Transit</span>
+                      </a>
+                      <a
+                        href={getNavigationUrl(selectedProvider, 'driving')}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex-1 p-2 text-xs bg-purple-100 text-purple-800 rounded hover:bg-purple-200 flex flex-col items-center"
+                        title="Driving directions"
+                      >
+                        <svg className="h-4 w-4 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 17a2 2 0 11-4 0 2 2 0 014 0zM19 17a2 2 0 11-4 0 2 2 0 014 0z" />
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h1m8-1a1 1 0 01-1 1H9m4-1V8a1 1 0 011-1h2.586a1 1 0 01.707.293l3.414 3.414a1 1 0 01.293.707V16a1 1 0 01-1 1h-1m-6-1a1 1 0 001 1h1M5 17a2 2 0 104 0m-4 0a2 2 0 114 0m6 0a2 2 0 104 0m-4 0a2 2 0 114 0" />
                         </svg>
-                      </button>
+                        <span>Drive</span>
+                      </a>
                     </div>
 
                     <Link
                       href={`/provider/${selectedProvider.id}`}
-                      className="px-2 py-1 text-xs bg-blue-600 text-white rounded hover:bg-blue-700"
+                      className="block w-full text-center px-3 py-2 text-sm bg-primary-600 text-white rounded hover:bg-primary-700 font-medium"
                     >
-                      View Profile
+                      View Profile & Book
                     </Link>
                   </div>
                 </div>
