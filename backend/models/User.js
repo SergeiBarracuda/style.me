@@ -76,6 +76,18 @@ const userSchema = new mongoose.Schema({
   twoFactorBackupCodes: [{
     type: String
   }],
+  // ID Verification fields
+  idVerificationStatus: {
+    type: String,
+    enum: ['not_submitted', 'pending', 'under_review', 'approved', 'rejected'],
+    default: 'not_submitted'
+  },
+  idVerificationSubmittedAt: {
+    type: Date
+  },
+  idVerificationApprovedAt: {
+    type: Date
+  },
   createdAt: {
     type: Date,
     default: Date.now
