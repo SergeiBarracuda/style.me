@@ -117,42 +117,35 @@ export default function EnhancedProviderMap({
     setSelectedProvider(null);
   };
 
-  // Create custom marker icon for each provider using their profile photo
+  // Create custom marker icon for each provider
+  // Uses an SVG marker with the provider's initial and color based on rating
   const createCustomMarker = (provider: Provider) => {
-    // Create a circular marker with provider's photo
-    const canvas = document.createElement('canvas');
-    const size = 50;
-    canvas.width = size;
-    canvas.height = size;
-    const ctx = canvas.getContext('2d');
+    // Color based on rating
+    const getMarkerColor = (rating: number) => {
+      if (rating >= 4.5) return '#10b981'; // green for excellent
+      if (rating >= 4.0) return '#3b82f6'; // blue for very good
+      if (rating >= 3.5) return '#f59e0b'; // amber for good
+      return '#ef4444'; // red for needs improvement
+    };
 
-    if (ctx) {
-      // Draw circle background
-      ctx.beginPath();
-      ctx.arc(size / 2, size / 2, size / 2, 0, 2 * Math.PI);
-      ctx.fillStyle = '#fff';
-      ctx.fill();
-      ctx.lineWidth = 3;
-      ctx.strokeStyle = '#db2777'; // primary-600
-      ctx.stroke();
+    const color = getMarkerColor(provider.rating);
+    const initial = provider.name.charAt(0).toUpperCase();
 
-      // Create image element for provider photo
-      const img = new Image();
-      img.crossOrigin = 'anonymous';
-      img.src = provider.profilePhoto || '/placeholder-profile.jpg';
+    // Create SVG marker with provider's initial
+    const svgMarker = `
+      <svg width="40" height="50" viewBox="0 0 40 50" xmlns="http://www.w3.org/2000/svg">
+        <path d="M20 0C8.954 0 0 8.954 0 20c0 11.046 20 30 20 30s20-18.954 20-30C40 8.954 31.046 0 20 0z"
+              fill="${color}" stroke="#ffffff" stroke-width="2"/>
+        <circle cx="20" cy="18" r="12" fill="#ffffff"/>
+        <text x="20" y="24" font-family="Arial, sans-serif" font-size="14" font-weight="bold"
+              fill="${color}" text-anchor="middle">${initial}</text>
+      </svg>
+    `;
 
-      // Return a data URL for the canvas
-      return {
-        url: canvas.toDataURL(),
-        scaledSize: new google.maps.Size(size, size),
-        anchor: new google.maps.Point(size / 2, size / 2),
-      };
-    }
-
-    // Fallback to default marker
     return {
-      url: '/marker-icon.png',
-      scaledSize: new google.maps.Size(40, 40),
+      url: 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(svgMarker),
+      scaledSize: new google.maps.Size(40, 50),
+      anchor: new google.maps.Point(20, 50),
     };
   };
 
