@@ -88,6 +88,16 @@ exports.login = async (req, res) => {
       return res.status(400).json({ message: 'Invalid credentials' });
     }
 
+    // Check if 2FA is enabled
+    if (user.twoFactorEnabled) {
+      // Return response indicating 2FA is required
+      return res.json({
+        twoFactorRequired: true,
+        userId: user.id,
+        message: '2FA verification required'
+      });
+    }
+
     // Generate JWT token
     const payload = {
       user: {
@@ -109,7 +119,8 @@ exports.login = async (req, res) => {
             firstName: user.firstName,
             lastName: user.lastName,
             email: user.email,
-            role: user.role
+            role: user.role,
+            twoFactorEnabled: user.twoFactorEnabled
           }
         });
       }

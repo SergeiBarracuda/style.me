@@ -15,6 +15,7 @@ const paymentRoutes = require('./routes/payment.routes');
 const reviewRoutes = require('./routes/review.routes');
 const searchRoutes = require('./routes/search.routes');
 const messageRoutes = require('./routes/message.routes');
+const twoFactorRoutes = require('./routes/twoFactor.routes');
 
 // Initialize express app
 const app = express();
@@ -40,6 +41,7 @@ app.use('/api/payments', paymentRoutes);
 app.use('/api/reviews', reviewRoutes);
 app.use('/api/search', searchRoutes);
 app.use('/api/messages', messageRoutes);
+app.use('/api/2fa', twoFactorRoutes);
 
 // Health check route
 app.get('/health', (req, res) => {
@@ -65,7 +67,8 @@ app.get('/', (req, res) => {
       payments: '/api/payments',
       reviews: '/api/reviews',
       search: '/api/search',
-      messages: '/api/messages'
+      messages: '/api/messages',
+      twoFactor: '/api/2fa'
     }
   });
 });

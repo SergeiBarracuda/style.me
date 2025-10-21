@@ -27,7 +27,9 @@
     "validator": "^13.9.0",
     "express-validator": "^6.15.0",
     "morgan": "^1.10.0",
-    "stripe": "^12.3.0"
+    "stripe": "^12.3.0",
+    "speakeasy": "^2.0.0",
+    "qrcode": "^1.5.3"
   },
   "devDependencies": {
     "nodemon": "^2.0.22",
