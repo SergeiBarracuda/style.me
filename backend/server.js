@@ -18,6 +18,8 @@ const messageRoutes = require('./routes/message.routes');
 const twoFactorRoutes = require('./routes/twoFactor.routes');
 const verificationRoutes = require('./routes/verification.routes');
 const gdprRoutes = require('./routes/gdpr.routes');
+const promotionRoutes = require('./routes/promotion.routes');
+const loyaltyRoutes = require('./routes/loyalty.routes');
 
 // Initialize express app
 const app = express();
@@ -46,6 +48,8 @@ app.use('/api/messages', messageRoutes);
 app.use('/api/2fa', twoFactorRoutes);
 app.use('/api/verification', verificationRoutes);
 app.use('/api/gdpr', gdprRoutes);
+app.use('/api/promotions', promotionRoutes);
+app.use('/api/loyalty', loyaltyRoutes);
 
 // Health check route
 app.get('/health', (req, res) => {
@@ -74,7 +78,9 @@ app.get('/', (req, res) => {
       messages: '/api/messages',
       twoFactor: '/api/2fa',
       verification: '/api/verification',
-      gdpr: '/api/gdpr'
+      gdpr: '/api/gdpr',
+      promotions: '/api/promotions',
+      loyalty: '/api/loyalty'
     }
   });
 });

@@ -21,10 +21,34 @@ const paymentSchema = new mongoose.Schema({
     required: true,
     min: 0
   },
+  // Commission and payout details
   commission: {
     type: Number,
     required: true,
     min: 0
+  },
+  commissionRate: {
+    type: Number,
+    required: true,
+    min: 0,
+    max: 100,
+    default: 15 // Default 15% commission
+  },
+  platformFee: {
+    type: Number,
+    default: 0
+  },
+  providerEarnings: {
+    type: Number,
+    required: true,
+    min: 0
+  },
+  promotionDiscount: {
+    type: Number,
+    default: 0
+  },
+  promotionCode: {
+    type: String
   },
   paymentMethod: {
     type: String,
@@ -47,6 +71,22 @@ const paymentSchema = new mongoose.Schema({
   },
   refundedAt: {
     type: Date
+  },
+  // Payout tracking
+  payoutStatus: {
+    type: String,
+    enum: ['pending', 'processing', 'paid', 'failed'],
+    default: 'pending'
+  },
+  payoutDate: {
+    type: Date
+  },
+  payoutMethod: {
+    type: String,
+    enum: ['bank_transfer', 'paypal', 'stripe_connect']
+  },
+  payoutTransactionId: {
+    type: String
   },
   createdAt: {
     type: Date,
