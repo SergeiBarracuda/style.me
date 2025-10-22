@@ -23,6 +23,7 @@ const loyaltyRoutes = require('./routes/loyalty.routes');
 const analyticsRoutes = require('./routes/analytics.routes');
 const disputeRoutes = require('./routes/dispute.routes');
 const featuredRoutes = require('./routes/featured.routes');
+const cancellationRoutes = require('./routes/cancellation.routes');
 
 // Initialize express app
 const app = express();
@@ -56,6 +57,7 @@ app.use('/api/loyalty', loyaltyRoutes);
 app.use('/api/analytics', analyticsRoutes);
 app.use('/api/disputes', disputeRoutes);
 app.use('/api/featured', featuredRoutes);
+app.use('/api/cancellation-policies', cancellationRoutes);
 
 // Health check route
 app.get('/health', (req, res) => {
@@ -89,7 +91,8 @@ app.get('/', (req, res) => {
       loyalty: '/api/loyalty',
       analytics: '/api/analytics',
       disputes: '/api/disputes',
-      featured: '/api/featured'
+      featured: '/api/featured',
+      cancellationPolicies: '/api/cancellation-policies'
     }
   });
 });

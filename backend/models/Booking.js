@@ -26,8 +26,12 @@ const bookingSchema = new mongoose.Schema({
   },
   status: {
     type: String,
-    enum: ['pending', 'confirmed', 'completed', 'cancelled', 'no-show'],
+    enum: ['pending', 'confirmed', 'completed', 'cancelled', 'no-show', 'disputed'],
     default: 'pending'
+  },
+  scheduledDate: {
+    type: Date,
+    required: true
   },
   price: {
     type: Number,
@@ -49,14 +53,42 @@ const bookingSchema = new mongoose.Schema({
     type: String,
     trim: true
   },
+  // Cancellation fields
   cancellationReason: {
     type: String,
     trim: true
+  },
+  cancellationNotes: {
+    type: String,
+    trim: true
+  },
+  cancellationDate: {
+    type: Date
+  },
+  cancellationBy: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User'
   },
   cancelledBy: {
     type: String,
     enum: ['client', 'provider', 'admin', null],
     default: null
+  },
+  cancellationPenalty: {
+    type: Number,
+    default: 0
+  },
+  refundAmount: {
+    type: Number,
+    default: 0
+  },
+  // Rescheduling tracking
+  rescheduleCount: {
+    type: Number,
+    default: 0
+  },
+  originalScheduledDate: {
+    type: Date
   },
   isReviewed: {
     type: Boolean,
