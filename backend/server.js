@@ -24,6 +24,7 @@ const analyticsRoutes = require('./routes/analytics.routes');
 const disputeRoutes = require('./routes/dispute.routes');
 const featuredRoutes = require('./routes/featured.routes');
 const cancellationRoutes = require('./routes/cancellation.routes');
+const reminderRoutes = require('./routes/reminder.routes');
 
 // Initialize express app
 const app = express();
@@ -58,6 +59,7 @@ app.use('/api/analytics', analyticsRoutes);
 app.use('/api/disputes', disputeRoutes);
 app.use('/api/featured', featuredRoutes);
 app.use('/api/cancellation-policies', cancellationRoutes);
+app.use('/api/reminders', reminderRoutes);
 
 // Health check route
 app.get('/health', (req, res) => {
@@ -92,7 +94,8 @@ app.get('/', (req, res) => {
       analytics: '/api/analytics',
       disputes: '/api/disputes',
       featured: '/api/featured',
-      cancellationPolicies: '/api/cancellation-policies'
+      cancellationPolicies: '/api/cancellation-policies',
+      reminders: '/api/reminders'
     }
   });
 });
