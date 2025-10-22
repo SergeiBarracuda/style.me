@@ -20,6 +20,7 @@ const verificationRoutes = require('./routes/verification.routes');
 const gdprRoutes = require('./routes/gdpr.routes');
 const promotionRoutes = require('./routes/promotion.routes');
 const loyaltyRoutes = require('./routes/loyalty.routes');
+const analyticsRoutes = require('./routes/analytics.routes');
 
 // Initialize express app
 const app = express();
@@ -50,6 +51,7 @@ app.use('/api/verification', verificationRoutes);
 app.use('/api/gdpr', gdprRoutes);
 app.use('/api/promotions', promotionRoutes);
 app.use('/api/loyalty', loyaltyRoutes);
+app.use('/api/analytics', analyticsRoutes);
 
 // Health check route
 app.get('/health', (req, res) => {
@@ -80,7 +82,8 @@ app.get('/', (req, res) => {
       verification: '/api/verification',
       gdpr: '/api/gdpr',
       promotions: '/api/promotions',
-      loyalty: '/api/loyalty'
+      loyalty: '/api/loyalty',
+      analytics: '/api/analytics'
     }
   });
 });
