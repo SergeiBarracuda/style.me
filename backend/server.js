@@ -22,6 +22,7 @@ const promotionRoutes = require('./routes/promotion.routes');
 const loyaltyRoutes = require('./routes/loyalty.routes');
 const analyticsRoutes = require('./routes/analytics.routes');
 const disputeRoutes = require('./routes/dispute.routes');
+const featuredRoutes = require('./routes/featured.routes');
 
 // Initialize express app
 const app = express();
@@ -54,6 +55,7 @@ app.use('/api/promotions', promotionRoutes);
 app.use('/api/loyalty', loyaltyRoutes);
 app.use('/api/analytics', analyticsRoutes);
 app.use('/api/disputes', disputeRoutes);
+app.use('/api/featured', featuredRoutes);
 
 // Health check route
 app.get('/health', (req, res) => {
@@ -86,7 +88,8 @@ app.get('/', (req, res) => {
       promotions: '/api/promotions',
       loyalty: '/api/loyalty',
       analytics: '/api/analytics',
-      disputes: '/api/disputes'
+      disputes: '/api/disputes',
+      featured: '/api/featured'
     }
   });
 });
