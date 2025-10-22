@@ -17,6 +17,7 @@ const searchRoutes = require('./routes/search.routes');
 const messageRoutes = require('./routes/message.routes');
 const twoFactorRoutes = require('./routes/twoFactor.routes');
 const verificationRoutes = require('./routes/verification.routes');
+const gdprRoutes = require('./routes/gdpr.routes');
 
 // Initialize express app
 const app = express();
@@ -44,6 +45,7 @@ app.use('/api/search', searchRoutes);
 app.use('/api/messages', messageRoutes);
 app.use('/api/2fa', twoFactorRoutes);
 app.use('/api/verification', verificationRoutes);
+app.use('/api/gdpr', gdprRoutes);
 
 // Health check route
 app.get('/health', (req, res) => {
@@ -71,7 +73,8 @@ app.get('/', (req, res) => {
       search: '/api/search',
       messages: '/api/messages',
       twoFactor: '/api/2fa',
-      verification: '/api/verification'
+      verification: '/api/verification',
+      gdpr: '/api/gdpr'
     }
   });
 });
