@@ -52,18 +52,6 @@ const userSchema = new mongoose.Schema({
     type: Map,
     of: String
   },
-  // Client rating fields (for bilateral rating system)
-  clientRating: {
-    type: Number,
-    default: 0,
-    min: 0,
-    max: 5
-  },
-  clientReviewCount: {
-    type: Number,
-    default: 0,
-    min: 0
-  },
   createdAt: {
     type: Date,
     default: Date.now

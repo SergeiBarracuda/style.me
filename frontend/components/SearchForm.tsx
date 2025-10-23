@@ -23,11 +23,10 @@ export default function SearchForm({ className = '' }: SearchFormProps) {
   const [useCurrentLocation, setUseCurrentLocation] = useState(true);
   const [customLocation, setCustomLocation] = useState('');
   const [locationError, setLocationError] = useState<string | null>(null);
-  const [availableNow, setAvailableNow] = useState(false);
 
   // Handle search submission
-  const handleSearch = async (e?: React.FormEvent) => {
-    if (e) e.preventDefault();
+  const handleSearch = async (e: React.FormEvent) => {
+    e.preventDefault();
 
     if (keyword) {
       // If keyword is provided, search by keyword
@@ -42,8 +41,7 @@ export default function SearchForm({ className = '' }: SearchFormProps) {
             location.lat,
             location.lng,
             radius,
-            selectedCategory || null,
-            { availableNow }
+            selectedCategory || null
           );
         } else if (customLocation) {
           // Use custom location (would need geocoding in a real app)
@@ -52,8 +50,7 @@ export default function SearchForm({ className = '' }: SearchFormProps) {
             40.7128, // New York City coordinates as fallback
             -74.0060,
             radius,
-            selectedCategory || null,
-            { availableNow }
+            selectedCategory || null
           );
         } else {
           setLocationError('Please enter a location or use your current location');
@@ -62,25 +59,6 @@ export default function SearchForm({ className = '' }: SearchFormProps) {
         console.error('Error getting location:', error);
         setLocationError('Unable to get your location. Please allow location access or enter a location manually.');
       }
-    }
-  };
-
-  // Handle "Available Now" quick search
-  const handleAvailableNowSearch = async () => {
-    setAvailableNow(true);
-    setKeyword(''); // Clear keyword search
-    try {
-      const location = await getUserLocation();
-      await searchProvidersByLocation(
-        location.lat,
-        location.lng,
-        radius,
-        selectedCategory || null,
-        { availableNow: true }
-      );
-    } catch (error) {
-      console.error('Error getting location:', error);
-      setLocationError('Unable to get your location. Please allow location access.');
     }
   };
 
@@ -215,39 +193,11 @@ export default function SearchForm({ className = '' }: SearchFormProps) {
           </>
         )}
 
-        {/* Available Now Filter */}
-        <div className="flex items-center">
-          <input
-            type="checkbox"
-            id="available-now"
-            checked={availableNow}
-            onChange={(e) => setAvailableNow(e.target.checked)}
-            className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
-          />
-          <label htmlFor="available-now" className="ml-2 block text-sm text-gray-700 dark:text-gray-300">
-            Show only providers available now
-          </label>
-        </div>
-
-        <div className="pt-2 space-y-2">
-          {/* Quick "Available Now" Button */}
-          <button
-            type="button"
-            onClick={handleAvailableNowSearch}
-            disabled={loading}
-            className="w-full bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center"
-          >
-            <svg className="h-5 w-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-            {loading ? 'Searching...' : 'Find Available Now'}
-          </button>
-
-          {/* Regular Search Button */}
+        <div className="pt-2">
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-primary-600 hover:bg-primary-700 text-white font-medium py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
           >
             {loading ? 'Searching...' : 'Search'}
           </button>

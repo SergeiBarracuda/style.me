@@ -33,16 +33,6 @@ router.get('/client', auth, reviewController.getReviewsByClient);
 // @access  Private
 router.get('/received', auth, reviewController.getReviewsReceivedByProvider);
 
-// @route   GET api/reviews/received/client
-// @desc    Get reviews received by client (providers rating clients)
-// @access  Private
-router.get('/received/client', auth, reviewController.getReviewsReceivedByClient);
-
-// @route   GET api/reviews/booking/:bookingId/status
-// @desc    Get booking review status (check if both parties reviewed)
-// @access  Private
-router.get('/booking/:bookingId/status', auth, reviewController.getBookingReviewStatus);
-
 // @route   PUT api/reviews/:id
 // @desc    Update review
 // @access  Private
