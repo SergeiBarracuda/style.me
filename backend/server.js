@@ -26,6 +26,9 @@ const featuredRoutes = require('./routes/featured.routes');
 const cancellationRoutes = require('./routes/cancellation.routes');
 const reminderRoutes = require('./routes/reminder.routes');
 
+// Import cron jobs
+const { initializeReminderCron } = require('./cron/processReminders');
+
 // Initialize express app
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -125,6 +128,10 @@ mongoose
   })
   .then(() => {
     console.log('Connected to MongoDB');
+
+    // Initialize cron jobs
+    initializeReminderCron();
+
     app.listen(PORT, '0.0.0.0', () => {
       console.log(`Server running on port ${PORT}`);
       console.log(`Environment: ${process.env.NODE_ENV}`);
